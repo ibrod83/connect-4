@@ -3,7 +3,7 @@ import {
   getLegalMoves,
   getOpponent
 } from "../game-core/game";
-import { COLUMNS, type Cell, type GameState, type PlayerId, ROWS } from "../game-core/types";
+import { COLUMNS, type AiLevel, type Cell, type GameState, type PlayerId, ROWS } from "../game-core/types";
 
 export type ScoredMove = {
   column: number;
@@ -18,7 +18,7 @@ export type AiStrategyConfig = {
 const WIN_SCORE = 1_000_000;
 const CENTER_COLUMN = Math.floor(COLUMNS / 2);
 
-export function getAiStrategyConfig(level: "easy" | "medium" | "hard"): AiStrategyConfig {
+export function getAiStrategyConfig(level: AiLevel): AiStrategyConfig {
   if (level === "easy") {
     return { depth: 1, random: true };
   }
@@ -27,12 +27,16 @@ export function getAiStrategyConfig(level: "easy" | "medium" | "hard"): AiStrate
     return { depth: 3, random: false };
   }
 
-  return { depth: 5, random: false };
+  if (level === "hard") {
+    return { depth: 5, random: false };
+  }
+
+  return { depth: 7, random: false };
 }
 
 export function chooseAiMove(
   state: GameState,
-  level: "easy" | "medium" | "hard",
+  level: AiLevel,
   random: () => number = Math.random
 ): number {
   const legalMoves = getLegalMoves(state);

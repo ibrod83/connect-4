@@ -9,7 +9,7 @@ type SetupScreenProps = {
 
 type GameMode = "ai" | "local";
 
-const levels: AiLevel[] = ["easy", "medium", "hard"];
+const levels: AiLevel[] = ["easy", "medium", "hard", "very_hard"];
 const startModes: StartMode[] = ["red", "yellow", "random"];
 
 export function SetupScreen({ onStart }: SetupScreenProps) {

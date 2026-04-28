@@ -29,7 +29,8 @@ export const resources = {
       difficulty: {
         easy: "Easy",
         medium: "Medium",
-        hard: "Hard"
+        hard: "Hard",
+        very_hard: "Very hard"
       },
       game: {
         board: "Connect 4 board",
@@ -78,7 +79,8 @@ export const resources = {
       difficulty: {
         easy: "קל",
         medium: "בינוני",
-        hard: "קשה"
+        hard: "קשה",
+        very_hard: "קשה מאוד"
       },
       game: {
         board: "לוח ארבע בשורה",

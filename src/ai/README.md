@@ -7,6 +7,7 @@ Current behavior:
 - `easy`: random legal move.
 - `medium`: minimax depth 3.
 - `hard`: minimax depth 5.
+- `very_hard`: minimax depth 7.
 - Alpha-beta pruning is used for minimax.
 - Center-column move ordering is used to improve search quality.
 

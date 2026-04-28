@@ -3,7 +3,7 @@ export const COLUMNS = 7;
 
 export type PlayerId = "red" | "yellow";
 export type PlayerKind = "human" | "ai";
-export type AiLevel = "easy" | "medium" | "hard";
+export type AiLevel = "easy" | "medium" | "hard" | "very_hard";
 export type StartMode = PlayerId | "random";
 export type SupportedLanguage = "en" | "he";
 

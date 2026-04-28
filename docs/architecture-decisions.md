@@ -46,6 +46,7 @@ This document is the short future-session reference for the main architectural d
   - `easy`: random legal move.
   - `medium`: minimax depth 3.
   - `hard`: minimax depth 5 with center-column move ordering.
+  - `very_hard`: minimax depth 7 with center-column move ordering.
 - AI functions must stay pure and framework-independent.
 
 ## i18n and RTL

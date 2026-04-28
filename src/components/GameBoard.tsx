@@ -18,7 +18,7 @@ const CELL_BASE_CLASS = "block size-full rounded-full border";
 const EMPTY_CELL_CLASS =
   "border-zinc-200 bg-zinc-100 shadow-[inset_0_3px_8px_rgba(0,0,0,0.18),0_1px_1px_rgba(255,255,255,0.8)]";
 const CHECKER_CLASS =
-  "shadow-[inset_0_2px_4px_rgba(255,255,255,0.25),0_2px_6px_rgba(15,23,42,0.45)]";
+  "shadow-[inset_0_2px_4px_rgba(255,255,255,0.25),0_2px_5px_rgba(15,23,42,0.35)]";
 
 export function GameBoard({
   game,
@@ -91,9 +91,9 @@ export function GameBoard({
                   <span
                     className={`${CELL_BASE_CLASS} ${
                       cell === "red"
-                        ? `border-red-700 bg-red-500 ${CHECKER_CLASS}`
+                        ? `border-red-600 bg-red-500 ${CHECKER_CLASS}`
                         : cell === "yellow"
-                          ? `border-yellow-600 bg-yellow-300 ${CHECKER_CLASS}`
+                          ? `border-yellow-300 bg-yellow-300 ${CHECKER_CLASS}`
                           : EMPTY_CELL_CLASS
                     } ${winning ? "ring-4 ring-white" : ""}`}
                   />
