@@ -50,19 +50,17 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
               red: {
                 id: "red",
                 kind: humanColor === "red" ? "human" : "ai",
-                name: humanColor === "red" ? t("players.red") : t("players.ai"),
                 aiLevel: humanColor === "red" ? undefined : aiLevel
               },
               yellow: {
                 id: "yellow",
                 kind: humanColor === "yellow" ? "human" : "ai",
-                name: humanColor === "yellow" ? t("players.yellow") : t("players.ai"),
                 aiLevel: humanColor === "yellow" ? undefined : aiLevel
               }
             }
           : {
-              red: { id: "red", kind: "human", name: t("players.red") },
-              yellow: { id: "yellow", kind: "human", name: t("players.yellow") }
+              red: { id: "red", kind: "human" },
+              yellow: { id: "yellow", kind: "human" }
             }
     });
   };

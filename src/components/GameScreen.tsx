@@ -1,8 +1,10 @@
 import { Plus, RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { GameController, GameSnapshot } from "../controller/GameController";
-import type { PlayerId } from "../game-core";
+import type { PlayerConfig, PlayerId } from "../game-core";
 import { GameBoard } from "./GameBoard";
+
+type Translator = (key: string, options?: Record<string, string>) => string;
 
 type GameScreenProps = {
   snapshot: Extract<GameSnapshot, { phase: "playing" }>;
@@ -30,7 +32,7 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
         <div className="mb-4">
           <p className="text-sm font-semibold text-zinc-500">
             {t("game.starter", {
-              player: playerName(snapshot, snapshot.resolvedStarter)
+              player: playerName(snapshot.setup.players[snapshot.resolvedStarter], t)
             })}
           </p>
           <h1 className="mt-1 text-2xl font-semibold text-zinc-950">{statusText}</h1>
@@ -71,6 +73,7 @@ function PlayerBadge({
   player: PlayerId;
   snapshot: Extract<GameSnapshot, { phase: "playing" }>;
 }) {
+  const { t } = useTranslation();
   const isCurrent =
     snapshot.game.status.type === "in_progress" &&
     snapshot.game.status.currentPlayer === player;
@@ -87,7 +90,7 @@ function PlayerBadge({
         }`}
       />
       <p className="truncate text-sm font-semibold text-zinc-950">
-        {playerName(snapshot, player)}
+        {playerName(snapshot.setup.players[player], t)}
       </p>
     </div>
   );
@@ -95,19 +98,21 @@ function PlayerBadge({
 
 function getStatusText(
   snapshot: Extract<GameSnapshot, { phase: "playing" }>,
-  t: (key: string, options?: Record<string, string>) => string
+  t: Translator
 ): string {
   const { game } = snapshot;
 
   if (game.status.type === "won") {
-    return t("game.winner", { player: playerName(snapshot, game.status.winner) });
+    return t("game.winner", {
+      player: playerName(snapshot.setup.players[game.status.winner], t)
+    });
   }
 
   if (game.status.type === "draw") {
     return t("game.draw");
   }
 
-  const player = playerName(snapshot, game.status.currentPlayer);
+  const player = playerName(snapshot.setup.players[game.status.currentPlayer], t);
 
   if (snapshot.aiThinking) {
     return t("game.aiThinking", { player });
@@ -116,9 +121,9 @@ function getStatusText(
   return t("game.turn", { player });
 }
 
-function playerName(
-  snapshot: Extract<GameSnapshot, { phase: "playing" }>,
-  player: PlayerId
-): string {
-  return snapshot.setup.players[player].name;
+function playerName(player: PlayerConfig, t: Translator): string {
+  if (player.kind === "ai") {
+    return t("players.ai");
+  }
+  return player.id === "red" ? t("players.red") : t("players.yellow");
 }

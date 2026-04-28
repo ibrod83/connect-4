@@ -57,13 +57,11 @@ export function createDefaultSetup(): GameSetup {
     players: {
       red: {
         id: "red",
-        kind: "human",
-        name: "Red"
+        kind: "human"
       },
       yellow: {
         id: "yellow",
         kind: "ai",
-        name: "AI",
         aiLevel: "hard"
       }
     }

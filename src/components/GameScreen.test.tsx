@@ -21,8 +21,8 @@ function playingSnapshot(aiThinking: boolean): Extract<GameSnapshot, { phase: "p
     setup: {
       startMode: "red",
       players: {
-        red: { id: "red", kind: "human", name: "Red" },
-        yellow: { id: "yellow", kind: "ai", name: "AI", aiLevel: "medium" }
+        red: { id: "red", kind: "human" },
+        yellow: { id: "yellow", kind: "ai", aiLevel: "medium" }
       }
     },
     game,

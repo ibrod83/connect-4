@@ -9,8 +9,8 @@ function localSetup(startMode: GameSetup["startMode"] = "red"): GameSetup {
   return {
     startMode,
     players: {
-      red: { id: "red", kind: "human", name: "Red" },
-      yellow: { id: "yellow", kind: "human", name: "Yellow" }
+      red: { id: "red", kind: "human" },
+      yellow: { id: "yellow", kind: "human" }
     }
   };
 }
@@ -19,8 +19,8 @@ function aiSetup(startMode: GameSetup["startMode"] = "red"): GameSetup {
   return {
     startMode,
     players: {
-      red: { id: "red", kind: "human", name: "Red" },
-      yellow: { id: "yellow", kind: "ai", name: "AI", aiLevel: "medium" }
+      red: { id: "red", kind: "human" },
+      yellow: { id: "yellow", kind: "ai", aiLevel: "medium" }
     }
   };
 }

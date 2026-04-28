@@ -34,7 +34,6 @@ export type GameState = {
 export type PlayerConfig = {
   id: PlayerId;
   kind: PlayerKind;
-  name: string;
   aiLevel?: AiLevel;
 };
 
