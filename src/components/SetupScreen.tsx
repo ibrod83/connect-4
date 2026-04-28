@@ -1,7 +1,7 @@
 import { Bot, Play, UsersRound } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { AiLevel, GameSetup, PlayerKind, StartMode } from "../game-core";
+import type { AiLevel, GameSetup, PlayerId, StartMode } from "../game-core";
 
 type SetupScreenProps = {
   onStart: (setup: GameSetup) => void;
@@ -10,37 +10,60 @@ type SetupScreenProps = {
 type GameMode = "ai" | "local";
 
 const levels: AiLevel[] = ["easy", "medium", "hard", "very_hard"];
-const startModes: StartMode[] = ["red", "yellow", "random"];
 
 export function SetupScreen({ onStart }: SetupScreenProps) {
   const { t } = useTranslation();
   const [mode, setMode] = useState<GameMode>("ai");
-  const [redName, setRedName] = useState("");
-  const [yellowName, setYellowName] = useState("");
+  const [humanColor, setHumanColor] = useState<PlayerId>("red");
   const [aiLevel, setAiLevel] = useState<AiLevel>("hard");
   const [startMode, setStartMode] = useState<StartMode>("red");
 
-  const yellowKind: PlayerKind = mode === "ai" ? "ai" : "human";
-  const yellowFallback = mode === "ai" ? t("players.ai") : t("players.yellow");
+  const aiColor: PlayerId = humanColor === "red" ? "yellow" : "red";
+
+  const changeHumanColor = (next: PlayerId) => {
+    if (next === humanColor) return;
+    setHumanColor(next);
+    setStartMode((prev) => (prev === "random" ? prev : prev === "red" ? "yellow" : "red"));
+  };
+
+  const startOptions: { value: StartMode; labelKey: string }[] =
+    mode === "ai"
+      ? [
+          { value: humanColor, labelKey: "setup.humanStarts" },
+          { value: aiColor, labelKey: "setup.aiStarts" },
+          { value: "random", labelKey: "setup.randomStarts" }
+        ]
+      : [
+          { value: "red", labelKey: "setup.redStarts" },
+          { value: "yellow", labelKey: "setup.yellowStarts" },
+          { value: "random", labelKey: "setup.randomStarts" }
+        ];
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     onStart({
       startMode,
-      players: {
-        red: {
-          id: "red",
-          kind: "human",
-          name: redName.trim() || t("players.red")
-        },
-        yellow: {
-          id: "yellow",
-          kind: yellowKind,
-          name: yellowName.trim() || yellowFallback,
-          aiLevel: yellowKind === "ai" ? aiLevel : undefined
-        }
-      }
+      players:
+        mode === "ai"
+          ? {
+              red: {
+                id: "red",
+                kind: humanColor === "red" ? "human" : "ai",
+                name: humanColor === "red" ? t("players.red") : t("players.ai"),
+                aiLevel: humanColor === "red" ? undefined : aiLevel
+              },
+              yellow: {
+                id: "yellow",
+                kind: humanColor === "yellow" ? "human" : "ai",
+                name: humanColor === "yellow" ? t("players.yellow") : t("players.ai"),
+                aiLevel: humanColor === "yellow" ? undefined : aiLevel
+              }
+            }
+          : {
+              red: { id: "red", kind: "human", name: t("players.red") },
+              yellow: { id: "yellow", kind: "human", name: t("players.yellow") }
+            }
     });
   };
 
@@ -73,31 +96,37 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
         </div>
       </fieldset>
 
-      <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <label className="block">
-          <span className="mb-1 block text-sm font-semibold text-zinc-700">
-            {t("setup.redName")}
-          </span>
-          <input
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-zinc-950 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-            placeholder={t("players.red")}
-            value={redName}
-            onChange={(event) => setRedName(event.target.value)}
-          />
-        </label>
-
-        <label className="block">
-          <span className="mb-1 block text-sm font-semibold text-zinc-700">
-            {mode === "ai" ? t("setup.aiName") : t("setup.yellowName")}
-          </span>
-          <input
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-zinc-950 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-            placeholder={yellowFallback}
-            value={yellowName}
-            onChange={(event) => setYellowName(event.target.value)}
-          />
-        </label>
-      </div>
+      {mode === "ai" ? (
+        <fieldset className="mb-5">
+          <legend className="mb-2 text-sm font-semibold text-zinc-700">
+            {t("setup.yourColor")}
+          </legend>
+          <div className="grid grid-cols-2 gap-2">
+            <SegmentButton
+              active={humanColor === "red"}
+              icon={
+                <span
+                  aria-hidden="true"
+                  className="size-4 rounded-full border border-red-600 bg-red-500"
+                />
+              }
+              label={t("players.red")}
+              onClick={() => changeHumanColor("red")}
+            />
+            <SegmentButton
+              active={humanColor === "yellow"}
+              icon={
+                <span
+                  aria-hidden="true"
+                  className="size-4 rounded-full border border-yellow-400 bg-yellow-300"
+                />
+              }
+              label={t("players.yellow")}
+              onClick={() => changeHumanColor("yellow")}
+            />
+          </div>
+        </fieldset>
+      ) : null}
 
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {mode === "ai" ? (
@@ -130,9 +159,9 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
             value={startMode}
             onChange={(event) => setStartMode(event.target.value as StartMode)}
           >
-            {startModes.map((modeOption) => (
-              <option key={modeOption} value={modeOption}>
-                {t(`setup.${modeOption}Starts`)}
+            {startOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {t(option.labelKey)}
               </option>
             ))}
           </select>

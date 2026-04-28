@@ -14,15 +14,15 @@ export const resources = {
         gameMode: "Mode",
         vsAi: "Human vs AI",
         localPlayers: "Local players",
-        redName: "Red player",
-        yellowName: "Yellow player",
-        aiName: "AI name",
+        yourColor: "Your color",
         difficulty: "Difficulty",
         starter: "Starts",
         start: "Start game",
         redStarts: "Red",
         yellowStarts: "Yellow",
-        randomStarts: "Random"
+        randomStarts: "Random",
+        humanStarts: "Human",
+        aiStarts: "AI"
       },
       difficulty: {
         easy: "Easy",
@@ -62,15 +62,15 @@ export const resources = {
         gameMode: "מצב",
         vsAi: "שחקן מול מחשב",
         localPlayers: "שני שחקנים מקומיים",
-        redName: "שחקן אדום",
-        yellowName: "שחקן צהוב",
-        aiName: "שם המחשב",
+        yourColor: "הצבע שלך",
         difficulty: "רמה",
         starter: "מי מתחיל",
         start: "התחל משחק",
         redStarts: "אדום",
         yellowStarts: "צהוב",
-        randomStarts: "אקראי"
+        randomStarts: "אקראי",
+        humanStarts: "שחקן",
+        aiStarts: "מחשב"
       },
       difficulty: {
         easy: "קל",
@@ -110,15 +110,15 @@ export const resources = {
         gameMode: "โหมด",
         vsAi: "ผู้เล่นปะทะ AI",
         localPlayers: "ผู้เล่นในเครื่อง",
-        redName: "ผู้เล่นแดง",
-        yellowName: "ผู้เล่นเหลือง",
-        aiName: "ชื่อ AI",
+        yourColor: "สีของคุณ",
         difficulty: "ระดับความยาก",
         starter: "เริ่มก่อน",
         start: "เริ่มเกม",
         redStarts: "แดง",
         yellowStarts: "เหลือง",
-        randomStarts: "สุ่ม"
+        randomStarts: "สุ่ม",
+        humanStarts: "ผู้เล่น",
+        aiStarts: "AI"
       },
       difficulty: {
         easy: "ง่าย",
