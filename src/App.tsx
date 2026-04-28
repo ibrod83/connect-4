@@ -18,10 +18,34 @@ export default function App() {
   useDocumentLanguage();
   const controller = controllerRef.current;
   const snapshot = useGameController(controller);
+  const prevPhaseRef = useRef(snapshot.phase);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [snapshot.phase]);
+
+  useEffect(() => {
+    const previous = prevPhaseRef.current;
+    prevPhaseRef.current = snapshot.phase;
+
+    if (previous === "setup" && snapshot.phase === "playing") {
+      window.history.pushState({ phase: "playing" }, "");
+    } else if (previous === "playing" && snapshot.phase === "setup") {
+      if (window.history.state?.phase === "playing") {
+        window.history.back();
+      }
+    }
+  }, [snapshot.phase]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (controller.getSnapshot().phase === "playing") {
+        controller.resetToSetup();
+      }
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [controller]);
 
   return (
     <main className="min-h-screen bg-zinc-100 px-3 py-4 text-zinc-950 sm:px-6 sm:py-5 lg:px-8">

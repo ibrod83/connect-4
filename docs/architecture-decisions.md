@@ -67,6 +67,13 @@ This document is the short future-session reference for the main architectural d
 - Prefer logical spacing and direction-safe utilities for multilingual UI.
 - Keep the UI simple, modern, and functional; avoid decorative effects that complicate the game surface.
 
+## Routing
+
+- The app uses the History API directly rather than a router library, to keep runtime dependencies minimal.
+- Entering the playing phase pushes a history entry tagged `{ phase: "playing" }`.
+- A `popstate` listener calls `resetToSetup()` when the browser back button is pressed during a game, so back returns to the setup screen instead of leaving the app.
+- Leaving the playing phase via the "New game" button calls `history.back()` to keep browser history in sync; the popstate handler is a no-op when phase has already changed.
+
 ## Offline/PWA
 
 - The app is a Vite PWA using `vite-plugin-pwa`.
