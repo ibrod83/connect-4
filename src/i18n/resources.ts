@@ -1,0 +1,102 @@
+export const supportedLanguages = ["en", "he"] as const;
+
+export const resources = {
+  en: {
+    translation: {
+      app: {
+        title: "Connect 4"
+      },
+      language: {
+        label: "Language",
+        en: "English",
+        he: "Hebrew"
+      },
+      setup: {
+        title: "New game",
+        gameMode: "Mode",
+        vsAi: "Human vs AI",
+        localPlayers: "Local players",
+        redName: "Red player",
+        yellowName: "Yellow player",
+        aiName: "AI name",
+        difficulty: "Difficulty",
+        starter: "Starts",
+        start: "Start game",
+        redStarts: "Red",
+        yellowStarts: "Yellow",
+        randomStarts: "Random"
+      },
+      difficulty: {
+        easy: "Easy",
+        medium: "Medium",
+        hard: "Hard"
+      },
+      game: {
+        board: "Connect 4 board",
+        turn: "{{player}} turn",
+        aiThinking: "{{player}} thinking",
+        winner: "{{player}} wins",
+        draw: "Draw",
+        starter: "Started: {{player}}",
+        restart: "Restart",
+        newGame: "New game",
+        column: "Column {{column}}",
+        dropColumn: "Drop in column {{column}}"
+      },
+      players: {
+        red: "Red",
+        yellow: "Yellow",
+        ai: "AI"
+      }
+    }
+  },
+  he: {
+    translation: {
+      app: {
+        title: "ארבע בשורה"
+      },
+      language: {
+        label: "שפה",
+        en: "אנגלית",
+        he: "עברית"
+      },
+      setup: {
+        title: "משחק חדש",
+        gameMode: "מצב",
+        vsAi: "שחקן מול מחשב",
+        localPlayers: "שני שחקנים מקומיים",
+        redName: "שחקן אדום",
+        yellowName: "שחקן צהוב",
+        aiName: "שם המחשב",
+        difficulty: "רמה",
+        starter: "מי מתחיל",
+        start: "התחל משחק",
+        redStarts: "אדום",
+        yellowStarts: "צהוב",
+        randomStarts: "אקראי"
+      },
+      difficulty: {
+        easy: "קל",
+        medium: "בינוני",
+        hard: "קשה"
+      },
+      game: {
+        board: "לוח ארבע בשורה",
+        turn: "התור של {{player}}",
+        aiThinking: "{{player}} חושב",
+        winner: "{{player}} ניצח",
+        draw: "תיקו",
+        starter: "התחיל: {{player}}",
+        restart: "התחל מחדש",
+        newGame: "משחק חדש",
+        column: "עמודה {{column}}",
+        dropColumn: "הנח בעמודה {{column}}"
+      },
+      players: {
+        red: "אדום",
+        yellow: "צהוב",
+        ai: "מחשב"
+      }
+    }
+  }
+} as const;
