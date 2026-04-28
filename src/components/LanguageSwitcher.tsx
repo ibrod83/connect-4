@@ -4,6 +4,14 @@ import { supportedLanguages } from "../i18n/resources";
 
 type SupportedLanguage = (typeof supportedLanguages)[number];
 
+function getEndonym(language: string): string {
+  try {
+    return new Intl.DisplayNames([language], { type: "language" }).of(language) ?? language;
+  } catch {
+    return language;
+  }
+}
+
 export function LanguageSwitcher() {
   const { t, i18n } = useTranslation();
   const currentLanguage = (i18n.resolvedLanguage ?? i18n.language) as SupportedLanguage;
@@ -19,8 +27,8 @@ export function LanguageSwitcher() {
         onChange={(event) => void i18n.changeLanguage(event.target.value)}
       >
         {supportedLanguages.map((language) => (
-          <option key={language} value={language}>
-            {t(`language.${language}`)}
+          <option key={language} value={language} lang={language}>
+            {getEndonym(language)}
           </option>
         ))}
       </select>

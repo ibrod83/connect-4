@@ -5,7 +5,7 @@ export type PlayerId = "red" | "yellow";
 export type PlayerKind = "human" | "ai";
 export type AiLevel = "easy" | "medium" | "hard" | "very_hard";
 export type StartMode = PlayerId | "random";
-export type SupportedLanguage = "en" | "he";
+export type SupportedLanguage = "en" | "he" | "th";
 
 export type Cell = PlayerId | null;
 

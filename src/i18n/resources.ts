@@ -1,4 +1,4 @@
-export const supportedLanguages = ["en", "he"] as const;
+export const supportedLanguages = ["en", "he", "th"] as const;
 
 export const resources = {
   en: {
@@ -7,9 +7,7 @@ export const resources = {
         title: "Connect 4"
       },
       language: {
-        label: "Language",
-        en: "English",
-        he: "Hebrew"
+        label: "Language"
       },
       setup: {
         title: "New game",
@@ -57,9 +55,7 @@ export const resources = {
         title: "ארבע בשורה"
       },
       language: {
-        label: "שפה",
-        en: "אנגלית",
-        he: "עברית"
+        label: "שפה"
       },
       setup: {
         title: "משחק חדש",
@@ -98,6 +94,54 @@ export const resources = {
         red: "אדום",
         yellow: "צהוב",
         ai: "מחשב"
+      }
+    }
+  },
+  th: {
+    translation: {
+      app: {
+        title: "เรียงสี่"
+      },
+      language: {
+        label: "ภาษา"
+      },
+      setup: {
+        title: "เกมใหม่",
+        gameMode: "โหมด",
+        vsAi: "ผู้เล่นปะทะ AI",
+        localPlayers: "ผู้เล่นในเครื่อง",
+        redName: "ผู้เล่นแดง",
+        yellowName: "ผู้เล่นเหลือง",
+        aiName: "ชื่อ AI",
+        difficulty: "ระดับความยาก",
+        starter: "เริ่มก่อน",
+        start: "เริ่มเกม",
+        redStarts: "แดง",
+        yellowStarts: "เหลือง",
+        randomStarts: "สุ่ม"
+      },
+      difficulty: {
+        easy: "ง่าย",
+        medium: "ปานกลาง",
+        hard: "ยาก",
+        very_hard: "ยากมาก"
+      },
+      game: {
+        board: "กระดานเรียงสี่",
+        turn: "ตาของ {{player}}",
+        aiThinking: "{{player}} กำลังคิด",
+        winner: "{{player}} ชนะ",
+        draw: "เสมอ",
+        starter: "เริ่มโดย: {{player}}",
+        restart: "เริ่มใหม่",
+        newGame: "เกมใหม่",
+        column: "คอลัมน์ {{column}}",
+        dropColumn: "หย่อนในคอลัมน์ {{column}}"
+      },
+      players: {
+        red: "แดง",
+        yellow: "เหลือง",
+        ai: "AI"
       }
     }
   }

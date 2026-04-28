@@ -15,8 +15,8 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
   const statusText = getStatusText(snapshot, t);
 
   return (
-    <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
-      <section className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+    <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <section className="rounded-lg sm:border sm:border-zinc-200 sm:bg-white sm:p-4 sm:shadow-sm">
         <GameBoard
           disabled={snapshot.aiThinking || game.status.type !== "in_progress"}
           game={game}
