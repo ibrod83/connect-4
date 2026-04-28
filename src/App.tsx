@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { createGameController, type GameController } from "./controller/GameController";
 import { useGameController } from "./hooks/useGameController";
 import { useDocumentLanguage } from "./i18n";
@@ -18,6 +18,10 @@ export default function App() {
   useDocumentLanguage();
   const controller = controllerRef.current;
   const snapshot = useGameController(controller);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [snapshot.phase]);
 
   return (
     <main className="min-h-screen bg-zinc-100 px-3 py-4 text-zinc-950 sm:px-6 sm:py-5 lg:px-8">
