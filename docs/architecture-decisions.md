@@ -52,7 +52,8 @@ This document is the short future-session reference for the main architectural d
 ## i18n and RTL
 
 - The app uses bundled `i18next` and `react-i18next` resources so language switching works offline.
-- MVP languages are English and Hebrew.
+- Bundled languages are English, Hebrew, and Thai.
+- Initial language is auto-detected via `i18next-browser-languagedetector` (client-side signals only, no IP); `supportedLngs` restricts detection to bundled languages, with English as the fallback. User selection persists in `localStorage`.
 - On language change, the app updates:
   - `document.documentElement.lang`
   - `document.documentElement.dir`

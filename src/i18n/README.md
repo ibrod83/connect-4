@@ -15,4 +15,5 @@ Rules for future edits:
 - Add new languages to `supportedLanguages` and `resources` together.
 - Use `i18n.dir(language)` for direction.
 - Language picker labels are rendered as endonyms via `Intl.DisplayNames`, so language names are not stored in `resources` — the picker stays correct regardless of the active UI language.
+- Initial language is auto-detected via `i18next-browser-languagedetector`; user selection persists in `localStorage`. `supportedLngs` constrains detection to bundled languages, so unsupported browser locales fall back to English.
 - Do not reset game state when changing language.
