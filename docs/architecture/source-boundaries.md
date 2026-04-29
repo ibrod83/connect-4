@@ -46,9 +46,10 @@ Current behavior:
 
 - `easy`: minimax depth 2.
 - `medium`: minimax depth 3.
-- `hard`: minimax depth 5.
-- `very_hard`: minimax depth 7.
-- Alpha-beta pruning is used for minimax.
+- `hard`: minimax depth 7.
+- `very_hard`: a worker-backed WASM solver using bitboards, negamax, alpha-beta pruning, a transposition table, and an opening book.
+- Minimax depth 7 remains the `very_hard` fallback when the worker-backed solver cannot run.
+- Alpha-beta pruning is used for minimax and the stronger solver.
 - Center-column move ordering is used to improve search quality.
 
 Rules for future edits:
@@ -57,6 +58,8 @@ Rules for future edits:
 - Do not mutate `GameState`.
 - Return legal column numbers only.
 - Keep difficulty mapping explicit and covered by tests.
+- AI move choosers may return a column synchronously or as a promise-like async result.
+- Strong or slow AI should run outside React and preferably off the main thread.
 
 ## Controller
 
@@ -71,6 +74,7 @@ The controller is responsible for:
 - Resolving random starters.
 - Scheduling AI turns.
 - Publishing `legalMoves` for UI rendering.
+- Ignoring stale async AI results after a restart or reset.
 
 The controller may use `game-core` and `ai`, but it must not import React components.
 

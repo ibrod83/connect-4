@@ -1,6 +1,7 @@
 import type { GameSetup } from "../game-core";
 import {
   DEFAULT_AI_THINKING_DELAY_MS,
+  type AiMoveChooser,
   createDefaultSetup,
   createGameController
 } from "./GameController";
@@ -23,6 +24,26 @@ function aiSetup(startMode: GameSetup["startMode"] = "red"): GameSetup {
       yellow: { id: "yellow", kind: "ai", aiLevel: "medium" }
     }
   };
+}
+
+function createDeferred<T>(): {
+  promise: Promise<T>;
+  resolve(value: T): void;
+  reject(error: unknown): void;
+} {
+  let resolve!: (value: T) => void;
+  let reject!: (error: unknown) => void;
+  const promise = new Promise<T>((promiseResolve, promiseReject) => {
+    resolve = promiseResolve;
+    reject = promiseReject;
+  });
+
+  return { promise, resolve, reject };
+}
+
+async function flushAsyncAi(): Promise<void> {
+  await Promise.resolve();
+  await Promise.resolve();
 }
 
 describe("GameController", () => {
@@ -93,6 +114,119 @@ describe("GameController", () => {
     expect(snapshot.phase === "playing" ? snapshot.game.moveHistory : []).toEqual([
       { player: "red", row: 5, column: 0 },
       { player: "yellow", row: 5, column: 1 }
+    ]);
+  });
+
+  it("keeps AI thinking until an async move chooser resolves", async () => {
+    const deferredMove = createDeferred<number>();
+    const controller = createGameController({
+      aiDelayMs: 0,
+      scheduler: (callback) => {
+        callback();
+        return 0;
+      },
+      chooseMove: () => deferredMove.promise
+    });
+
+    controller.startGame(aiSetup("red"));
+    controller.dropPiece(0);
+
+    const thinkingSnapshot = controller.getSnapshot();
+    expect(thinkingSnapshot.phase === "playing" ? thinkingSnapshot.aiThinking : false).toBe(
+      true
+    );
+    expect(thinkingSnapshot.phase === "playing" ? thinkingSnapshot.game.moveHistory : []).toEqual([
+      { player: "red", row: 5, column: 0 }
+    ]);
+
+    deferredMove.resolve(1);
+    await flushAsyncAi();
+
+    const snapshot = controller.getSnapshot();
+    expect(snapshot.phase === "playing" ? snapshot.aiThinking : true).toBe(false);
+    expect(snapshot.phase === "playing" ? snapshot.game.moveHistory : []).toEqual([
+      { player: "red", row: 5, column: 0 },
+      { player: "yellow", row: 5, column: 1 }
+    ]);
+  });
+
+  it("ignores stale async AI results after a restart", async () => {
+    const deferredMove = createDeferred<number>();
+    const controller = createGameController({
+      aiDelayMs: 0,
+      scheduler: (callback) => {
+        callback();
+        return 0;
+      },
+      chooseMove: () => deferredMove.promise
+    });
+
+    controller.startGame(aiSetup("red"));
+    controller.dropPiece(0);
+    controller.restart();
+
+    deferredMove.resolve(1);
+    await flushAsyncAi();
+
+    const snapshot = controller.getSnapshot();
+    expect(snapshot.phase === "playing" ? snapshot.game.moveHistory : null).toEqual([]);
+    expect(snapshot.phase === "playing" ? snapshot.game.status : null).toEqual({
+      type: "in_progress",
+      currentPlayer: "red"
+    });
+  });
+
+  it("aborts pending async AI work after a restart", async () => {
+    const chooseMove = vi.fn((...args: Parameters<AiMoveChooser>) => {
+      const signal = args[3];
+
+      return new Promise<number>((resolve, reject) => {
+        signal.addEventListener("abort", () => reject(new Error("aborted")), {
+          once: true
+        });
+        window.setTimeout(() => resolve(1), 10);
+      });
+    });
+    const controller = createGameController({
+      aiDelayMs: 0,
+      scheduler: (callback) => {
+        callback();
+        return 0;
+      },
+      chooseMove
+    });
+
+    controller.startGame(aiSetup("red"));
+    controller.dropPiece(0);
+    controller.restart();
+    await flushAsyncAi();
+
+    expect(chooseMove).toHaveBeenCalled();
+    const snapshot = controller.getSnapshot();
+    expect(snapshot.phase === "playing" ? snapshot.game.moveHistory : null).toEqual([]);
+  });
+
+  it("clears AI thinking and stores errors from rejected async move choosers", async () => {
+    const controller = createGameController({
+      aiDelayMs: 0,
+      scheduler: (callback) => {
+        callback();
+        return 0;
+      },
+      chooseMove: () => Promise.reject(new Error("AI engine failed."))
+    });
+
+    controller.startGame(aiSetup("red"));
+    controller.dropPiece(0);
+    await flushAsyncAi();
+
+    const snapshot = controller.getSnapshot();
+    expect(snapshot.phase === "playing" ? snapshot.aiThinking : true).toBe(false);
+    expect(snapshot.phase === "playing" ? snapshot.lastError : null).toBe(
+      "AI engine failed."
+    );
+    expect(snapshot.phase === "playing" ? snapshot.game.moveHistory : []).toEqual([
+      { player: "red", row: 5, column: 0 }
     ]);
   });
 

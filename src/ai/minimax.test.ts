@@ -35,7 +35,7 @@ describe("AI minimax", () => {
   it("maps difficulty to expected strategy depth", () => {
     expect(getAiStrategyConfig("easy")).toEqual({ depth: 2, random: false });
     expect(getAiStrategyConfig("medium")).toEqual({ depth: 3, random: false });
-    expect(getAiStrategyConfig("hard")).toEqual({ depth: 5, random: false });
+    expect(getAiStrategyConfig("hard")).toEqual({ depth: 7, random: false });
     expect(getAiStrategyConfig("very_hard")).toEqual({ depth: 7, random: false });
   });
 });

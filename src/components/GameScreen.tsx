@@ -1,7 +1,7 @@
 import { Plus, RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { GameController, GameSnapshot } from "../controller/GameController";
-import type { PlayerId } from "../game-core";
+import type { AiLevel, PlayerId } from "../game-core";
 import { GameBoard } from "./GameBoard";
 
 type Translator = (key: string, options?: Record<string, string>) => string;
@@ -20,6 +20,7 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
   const { t } = useTranslation();
   const { game } = snapshot;
   const statusText = getStatusText(snapshot, t);
+  const aiDifficulty = getAiDifficulty(snapshot);
 
   return (
     <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
@@ -41,6 +42,14 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
             })}
           </p>
           <h1 className="mt-1 text-2xl font-semibold text-zinc-950">{statusText}</h1>
+          {aiDifficulty ? (
+            <p className="mt-3 flex items-center gap-2 text-sm">
+              <span className="font-semibold text-zinc-500">{t("setup.difficulty")}</span>
+              <span className="font-semibold text-zinc-950">
+                {t(`difficulty.${aiDifficulty}`)}
+              </span>
+            </p>
+          ) : null}
         </div>
 
         <div className="mb-5 grid grid-cols-2 gap-2">
@@ -69,6 +78,14 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
       </aside>
     </div>
   );
+}
+
+function getAiDifficulty(snapshot: Extract<GameSnapshot, { phase: "playing" }>): AiLevel | null {
+  const aiPlayer = Object.values(snapshot.setup.players).find(
+    (playerConfig) => playerConfig.kind === "ai"
+  );
+
+  return aiPlayer?.aiLevel ?? (aiPlayer ? "hard" : null);
 }
 
 function PlayerBadge({

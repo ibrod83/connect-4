@@ -28,7 +28,7 @@ export function getAiStrategyConfig(level: AiLevel): AiStrategyConfig {
   }
 
   if (level === "hard") {
-    return { depth: 5, random: false };
+    return { depth: 7, random: false };
   }
 
   return { depth: 7, random: false };

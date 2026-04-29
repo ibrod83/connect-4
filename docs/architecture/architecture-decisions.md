@@ -43,12 +43,16 @@ This document is the short future-session reference for the main architectural d
 
 ## AI
 
-- AI uses minimax with alpha-beta pruning.
+- AI uses minimax with alpha-beta pruning for `easy`, `medium`, and `hard`.
+- `very_hard` uses a worker-backed WASM solver with bitboards, negamax, alpha-beta pruning, a transposition table, and an embedded opening book.
+- If the worker-backed solver cannot run, `very_hard` falls back to minimax depth 7.
+- The controller accepts AI move choosers that return either a column number or a promise-like column result.
+- Async AI results are ignored if they belong to an older game after restart or reset.
 - Difficulty mapping:
   - `easy`: minimax depth 2 with center-column move ordering.
   - `medium`: minimax depth 3 with center-column move ordering.
-  - `hard`: minimax depth 5 with center-column move ordering.
-  - `very_hard`: minimax depth 7 with center-column move ordering.
+  - `hard`: minimax depth 7 with center-column move ordering.
+  - `very_hard`: strong solver, with minimax depth 7 as fallback.
 - AI functions must stay pure and framework-independent.
 
 ## i18n and RTL
@@ -94,6 +98,6 @@ This document is the short future-session reference for the main architectural d
 
 ## Dependency Boundary
 
-- Runtime dependencies are limited to React, i18n, and UI icons.
+- Runtime dependencies are limited to React, i18n, UI icons, and the local WASM Connect 4 solver.
 - Build/test/PWA tools live in `devDependencies`.
 - `npm audit --omit=dev` should remain clean for runtime dependencies.

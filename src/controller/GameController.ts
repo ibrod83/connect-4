@@ -1,4 +1,5 @@
-import { chooseAiMove } from "../ai/minimax";
+import { chooseDefaultAiMove } from "../ai/defaultAi";
+import type { AiMoveChooser, AiMoveResult } from "../ai/types";
 import {
   applyMove,
   createInitialGame,
@@ -33,6 +34,14 @@ export type GameSnapshot =
       lastError: string | null;
     };
 
+type PlayingSnapshot = Extract<GameSnapshot, { phase: "playing" }>;
+type InProgressGameState = GameState & {
+  status: Extract<GameState["status"], { type: "in_progress" }>;
+};
+type CurrentAiSnapshot = PlayingSnapshot & {
+  game: InProgressGameState;
+};
+
 export type GameController = {
   getSnapshot(): GameSnapshot;
   subscribe(listener: () => void): () => void;
@@ -42,13 +51,15 @@ export type GameController = {
   resetToSetup(): void;
 };
 
+export type { AiMoveChooser, AiMoveResult };
+
 type Scheduler = (callback: () => void, delay: number) => unknown;
 
-type ControllerOptions = {
+export type ControllerOptions = {
   random?: RandomSource;
   aiDelayMs?: number;
   scheduler?: Scheduler;
-  chooseMove?: typeof chooseAiMove;
+  chooseMove?: AiMoveChooser;
 };
 
 export function createDefaultSetup(): GameSetup {
@@ -77,14 +88,15 @@ class ConnectFourController implements GameController {
   private readonly listeners = new Set<() => void>();
   private readonly random: RandomSource;
   private readonly scheduler: Scheduler;
-  private readonly chooseMove: typeof chooseAiMove;
+  private readonly chooseMove: AiMoveChooser;
   private readonly aiDelayMs: number;
+  private aiAbortController: AbortController | null = null;
   private turnToken = 0;
 
   constructor(options: ControllerOptions) {
     this.random = options.random ?? Math.random;
     this.scheduler = options.scheduler ?? ((callback, delay) => window.setTimeout(callback, delay));
-    this.chooseMove = options.chooseMove ?? chooseAiMove;
+    this.chooseMove = options.chooseMove ?? chooseDefaultAiMove;
     this.aiDelayMs = options.aiDelayMs ?? DEFAULT_AI_THINKING_DELAY_MS;
     this.snapshot = {
       phase: "setup",
@@ -113,6 +125,7 @@ class ConnectFourController implements GameController {
     const resolvedStarter = resolveStarter(nextSetup.startMode, this.random);
     const game = createInitialGame(resolvedStarter);
 
+    this.cancelAiTurn();
     this.turnToken += 1;
     this.snapshot = {
       phase: "playing",
@@ -151,6 +164,7 @@ class ConnectFourController implements GameController {
   }
 
   resetToSetup(): void {
+    this.cancelAiTurn();
     this.turnToken += 1;
     this.snapshot = {
       phase: "setup",
@@ -204,6 +218,8 @@ class ConnectFourController implements GameController {
     }
 
     const token = this.turnToken;
+    const abortController = new AbortController();
+    this.aiAbortController = abortController;
     this.snapshot = {
       ...this.snapshot,
       aiThinking: true,
@@ -211,22 +227,80 @@ class ConnectFourController implements GameController {
     };
     this.emit();
 
-    this.scheduler(() => {
-      if (
-        this.snapshot.phase !== "playing" ||
-        token !== this.turnToken ||
-        this.snapshot.game.status.type !== "in_progress"
-      ) {
+    this.scheduler(() => this.runScheduledAiTurn(token), this.aiDelayMs);
+  }
+
+  private runScheduledAiTurn(token: number): void {
+    const snapshot = this.getCurrentAiSnapshot(token);
+
+    if (!snapshot) {
+      return;
+    }
+
+    const aiPlayer = snapshot.game.status.currentPlayer;
+    const aiLevel = snapshot.setup.players[aiPlayer].aiLevel ?? "hard";
+
+    try {
+      const signal = this.aiAbortController?.signal;
+
+      if (!signal) {
         return;
       }
 
-      const aiPlayer = this.snapshot.game.status.currentPlayer;
-      const aiLevel = this.snapshot.setup.players[aiPlayer].aiLevel ?? "hard";
-      const column = this.chooseMove(this.snapshot.game, aiLevel as AiLevel, this.random);
+      const result = this.chooseMove(snapshot.game, aiLevel, this.random, signal);
 
-      this.applyColumnForAi(column);
-      this.scheduleAiTurnIfNeeded();
-    }, this.aiDelayMs);
+      if (isPromiseLike(result)) {
+        void Promise.resolve(result).then(
+          (column) => this.finishAiTurn(token, column),
+          (error: unknown) => this.failAiTurn(token, error)
+        );
+        return;
+      }
+
+      this.finishAiTurn(token, result);
+    } catch (error) {
+      this.failAiTurn(token, error);
+    }
+  }
+
+  private finishAiTurn(token: number, column: number): void {
+    if (!this.getCurrentAiSnapshot(token)) {
+      return;
+    }
+
+    this.aiAbortController = null;
+    this.applyColumnForAi(column);
+    this.scheduleAiTurnIfNeeded();
+  }
+
+  private failAiTurn(token: number, error: unknown): void {
+    const snapshot = this.getCurrentAiSnapshot(token);
+
+    if (!snapshot) {
+      return;
+    }
+
+    this.aiAbortController = null;
+    this.snapshot = {
+      ...snapshot,
+      aiThinking: false,
+      lastError: error instanceof Error ? error.message : "AI move failed."
+    };
+    this.emit();
+  }
+
+  private getCurrentAiSnapshot(token: number): CurrentAiSnapshot | null {
+    const snapshot = this.snapshot;
+
+    if (
+      snapshot.phase !== "playing" ||
+      token !== this.turnToken ||
+      snapshot.game.status.type !== "in_progress"
+    ) {
+      return null;
+    }
+
+    return snapshot as CurrentAiSnapshot;
   }
 
   private applyColumnForAi(column: number): void {
@@ -257,6 +331,11 @@ class ConnectFourController implements GameController {
   private emit(): void {
     this.listeners.forEach((listener) => listener());
   }
+
+  private cancelAiTurn(): void {
+    this.aiAbortController?.abort();
+    this.aiAbortController = null;
+  }
 }
 
 function cloneSetup(setup: GameSetup): GameSetup {
@@ -267,4 +346,13 @@ function cloneSetup(setup: GameSetup): GameSetup {
       yellow: { ...setup.players.yellow }
     }
   };
+}
+
+function isPromiseLike(result: AiMoveResult): result is PromiseLike<number> {
+  return (
+    typeof result === "object" &&
+    result !== null &&
+    "then" in result &&
+    typeof result.then === "function"
+  );
 }

@@ -33,6 +33,21 @@ function playingSnapshot(aiThinking: boolean): Extract<GameSnapshot, { phase: "p
   };
 }
 
+function playingSnapshotWithoutExplicitAiLevel(): Extract<GameSnapshot, { phase: "playing" }> {
+  const snapshot = playingSnapshot(false);
+
+  return {
+    ...snapshot,
+    setup: {
+      ...snapshot.setup,
+      players: {
+        red: snapshot.setup.players.red,
+        yellow: { id: "yellow", kind: "ai" }
+      }
+    }
+  };
+}
+
 function localPlayingSnapshot(): Extract<GameSnapshot, { phase: "playing" }> {
   const game = createInitialGame("red");
 
@@ -63,9 +78,20 @@ describe("GameScreen", () => {
 
     expect(screen.getByText("Started: You")).toBeInTheDocument();
     expect(screen.getByText("Your turn")).toBeInTheDocument();
+    expect(screen.getByText("Difficulty")).toBeInTheDocument();
+    expect(screen.getByText("Medium")).toBeInTheDocument();
     expect(screen.getByText("You")).toBeInTheDocument();
     expect(screen.getByText("AI")).toBeInTheDocument();
     expect(screen.queryByText("Red")).not.toBeInTheDocument();
+  });
+
+  it("shows hard as the default board difficulty when AI level is omitted", () => {
+    render(
+      <GameScreen controller={controller} snapshot={playingSnapshotWithoutExplicitAiLevel()} />
+    );
+
+    expect(screen.getByText("Difficulty")).toBeInTheDocument();
+    expect(screen.getByText("Hard")).toBeInTheDocument();
   });
 
   it("shows numbered player identity in local human games", () => {
@@ -75,6 +101,7 @@ describe("GameScreen", () => {
     expect(screen.getByText("Player 1's turn")).toBeInTheDocument();
     expect(screen.getByText("Player 1")).toBeInTheDocument();
     expect(screen.getByText("Player 2")).toBeInTheDocument();
+    expect(screen.queryByText("Difficulty")).not.toBeInTheDocument();
     expect(screen.queryByText("Red")).not.toBeInTheDocument();
   });
 
