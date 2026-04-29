@@ -33,7 +33,12 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,svg,ico,png,webmanifest,wasm}"]
+        globPatterns: ["**/*.{js,css,html,svg,ico,png,webmanifest,wasm}"],
+        // Without this, the SW's default navigateFallback to /index.html intercepts
+        // address-bar navigations to /sitemap.xml and /robots.txt and serves the SPA
+        // shell instead. Crawlers don't execute SWs so SEO is unaffected, but this
+        // makes the URLs verifiable in a normal browser tab.
+        navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/]
       },
       devOptions: {
         enabled: true
