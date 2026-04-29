@@ -88,10 +88,15 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
           <SegmentButton
             active={mode === "local"}
             icon={<UsersRound aria-hidden="true" className="size-4" />}
-            label={t("setup.localPlayers")}
+            label={t("setup.playground")}
             onClick={() => setMode("local")}
           />
         </div>
+        {mode === "local" ? (
+          <p className="mt-3 rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-sm leading-6 text-blue-950">
+            {t("setup.playgroundHelp")}
+          </p>
+        ) : null}
       </fieldset>
 
       {mode === "ai" ? (
