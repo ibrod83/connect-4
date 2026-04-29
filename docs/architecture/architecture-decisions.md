@@ -45,8 +45,8 @@ This document is the short future-session reference for the main architectural d
 
 - AI uses minimax with alpha-beta pruning.
 - Difficulty mapping:
-  - `easy`: random legal move.
-  - `medium`: minimax depth 3.
+  - `easy`: minimax depth 2 with center-column move ordering.
+  - `medium`: minimax depth 3 with center-column move ordering.
   - `hard`: minimax depth 5 with center-column move ordering.
   - `very_hard`: minimax depth 7 with center-column move ordering.
 - AI functions must stay pure and framework-independent.

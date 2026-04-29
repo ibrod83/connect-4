@@ -20,7 +20,7 @@ const CENTER_COLUMN = Math.floor(COLUMNS / 2);
 
 export function getAiStrategyConfig(level: AiLevel): AiStrategyConfig {
   if (level === "easy") {
-    return { depth: 1, random: true };
+    return { depth: 2, random: false };
   }
 
   if (level === "medium") {

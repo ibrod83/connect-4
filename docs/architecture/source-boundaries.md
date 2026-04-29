@@ -44,7 +44,7 @@ Rules for future edits:
 
 Current behavior:
 
-- `easy`: random legal move.
+- `easy`: minimax depth 2.
 - `medium`: minimax depth 3.
 - `hard`: minimax depth 5.
 - `very_hard`: minimax depth 7.

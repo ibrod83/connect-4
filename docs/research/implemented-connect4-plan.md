@@ -37,9 +37,10 @@ React connects to the non-React controller through a custom hook using `useSyncE
 
 ## AI Difficulty
 
-- `easy`: random legal move.
-- `medium`: minimax depth 3.
+- `easy`: minimax depth 2 with alpha-beta pruning and center-column move ordering.
+- `medium`: minimax depth 3 with alpha-beta pruning and center-column move ordering.
 - `hard`: minimax depth 5 with alpha-beta pruning and center-column move ordering.
+- `very_hard`: minimax depth 7 with alpha-beta pruning and center-column move ordering.
 
 ## Implemented Steps
 
