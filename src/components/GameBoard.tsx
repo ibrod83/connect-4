@@ -95,7 +95,7 @@ export function GameBoard({
                         : cell === "yellow"
                           ? `border-yellow-300 bg-yellow-300 ${CHECKER_CLASS}`
                           : EMPTY_CELL_CLASS
-                    } ${winning ? "ring-4 ring-white" : ""}`}
+                    } ${winning ? "ring-2 ring-white sm:ring-4" : ""}`}
                   />
                 </span>
               );
