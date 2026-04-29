@@ -31,6 +31,8 @@ This document is the short future-session reference for the main architectural d
 - Human and AI players use the same turn flow through `PlayerConfig`.
 - A human-vs-AI game is just a setup where one player has `kind: "ai"`.
 - If the resolved starter is AI, the controller schedules the opening AI move automatically.
+- User-facing player identity is role-based, not color-based: human-vs-AI displays `You` and `AI`; local pass-and-play displays `Player 1` and `Player 2`.
+- Red and yellow remain piece colors and are shown as color markers beside the player identity.
 
 ## Starter Selection
 

@@ -121,6 +121,7 @@ Components may:
 - Hold local form state for setup inputs.
 - Dispatch controller commands such as `startGame`, `dropPiece`, `restart`, and `resetToSetup`.
 - Use translation keys and Tailwind classes.
+- Derive display labels from setup data, such as `You`/`AI` or `Player 1`/`Player 2`.
 
 Components must not:
 

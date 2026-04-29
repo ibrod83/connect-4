@@ -29,13 +29,13 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
   const startOptions: { value: StartMode; labelKey: string }[] =
     mode === "ai"
       ? [
-          { value: humanColor, labelKey: "setup.humanStarts" },
-          { value: aiColor, labelKey: "setup.aiStarts" },
+          { value: humanColor, labelKey: "players.you" },
+          { value: aiColor, labelKey: "players.ai" },
           { value: "random", labelKey: "setup.randomStarts" }
         ]
       : [
-          { value: "red", labelKey: "setup.redStarts" },
-          { value: "yellow", labelKey: "setup.yellowStarts" },
+          { value: "red", labelKey: "players.player1" },
+          { value: "yellow", labelKey: "players.player2" },
           { value: "random", labelKey: "setup.randomStarts" }
         ];
 

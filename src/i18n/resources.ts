@@ -32,9 +32,11 @@ export const resources = {
       },
       game: {
         board: "Connect 4 board",
-        turn: "{{player}} turn",
-        aiThinking: "{{player}} thinking",
+        turn: "{{player}}'s turn",
+        yourTurn: "Your turn",
+        aiThinking: "{{player}} is thinking",
         winner: "{{player}} wins",
+        youWin: "You win",
         draw: "Draw",
         starter: "Started: {{player}}",
         restart: "Restart",
@@ -45,6 +47,9 @@ export const resources = {
       players: {
         red: "Red",
         yellow: "Yellow",
+        you: "You",
+        player1: "Player 1",
+        player2: "Player 2",
         ai: "AI"
       }
     }
@@ -81,8 +86,10 @@ export const resources = {
       game: {
         board: "לוח ארבע בשורה",
         turn: "התור של {{player}}",
+        yourTurn: "התור שלך",
         aiThinking: "{{player}} חושב",
         winner: "{{player}} ניצח",
+        youWin: "ניצחת",
         draw: "תיקו",
         starter: "התחיל: {{player}}",
         restart: "התחל מחדש",
@@ -93,6 +100,9 @@ export const resources = {
       players: {
         red: "אדום",
         yellow: "צהוב",
+        you: "אתה",
+        player1: "שחקן 1",
+        player2: "שחקן 2",
         ai: "מחשב"
       }
     }
@@ -129,8 +139,10 @@ export const resources = {
       game: {
         board: "กระดานเรียงสี่",
         turn: "ตาของ {{player}}",
+        yourTurn: "ตาของคุณ",
         aiThinking: "{{player}} กำลังคิด",
         winner: "{{player}} ชนะ",
+        youWin: "คุณชนะ",
         draw: "เสมอ",
         starter: "เริ่มโดย: {{player}}",
         restart: "เริ่มใหม่",
@@ -141,6 +153,9 @@ export const resources = {
       players: {
         red: "แดง",
         yellow: "เหลือง",
+        you: "คุณ",
+        player1: "ผู้เล่น 1",
+        player2: "ผู้เล่น 2",
         ai: "AI"
       }
     }

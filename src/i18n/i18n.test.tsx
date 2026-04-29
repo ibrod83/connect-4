@@ -29,7 +29,7 @@ describe("i18n and RTL behavior", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Start game" }));
     expect(screen.getByTestId("game-board")).toBeInTheDocument();
-    expect(screen.getByText(/Started: Red/)).toBeInTheDocument();
+    expect(screen.getByText(/Started: You/)).toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText("Language"), { target: { value: "he" } });
 
@@ -38,8 +38,8 @@ describe("i18n and RTL behavior", () => {
     });
     expect(screen.getByTestId("game-board")).toBeInTheDocument();
     expect(document.documentElement).toHaveAttribute("dir", "rtl");
-    expect(screen.getByText(/התחיל: אדום/)).toBeInTheDocument();
-    expect(screen.queryByText(/Started: Red/)).not.toBeInTheDocument();
+    expect(screen.getByText(/התחיל: אתה/)).toBeInTheDocument();
+    expect(screen.queryByText(/Started: You/)).not.toBeInTheDocument();
   });
 
   it("keeps board direction and column mapping stable in RTL", async () => {

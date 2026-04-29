@@ -1,10 +1,15 @@
 import { Plus, RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { GameController, GameSnapshot } from "../controller/GameController";
-import type { PlayerConfig, PlayerId } from "../game-core";
+import type { PlayerId } from "../game-core";
 import { GameBoard } from "./GameBoard";
 
 type Translator = (key: string, options?: Record<string, string>) => string;
+type PlayerIdentityKind = "you" | "ai" | "player1" | "player2";
+type PlayerIdentity = {
+  kind: PlayerIdentityKind;
+  label: string;
+};
 
 type GameScreenProps = {
   snapshot: Extract<GameSnapshot, { phase: "playing" }>;
@@ -32,7 +37,7 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
         <div className="mb-4">
           <p className="text-sm font-semibold text-zinc-500">
             {t("game.starter", {
-              player: playerName(snapshot.setup.players[snapshot.resolvedStarter], t)
+              player: getPlayerIdentity(snapshot, snapshot.resolvedStarter, t).label
             })}
           </p>
           <h1 className="mt-1 text-2xl font-semibold text-zinc-950">{statusText}</h1>
@@ -90,7 +95,7 @@ function PlayerBadge({
         }`}
       />
       <p className="truncate text-sm font-semibold text-zinc-950">
-        {playerName(snapshot.setup.players[player], t)}
+        {getPlayerIdentity(snapshot, player, t).label}
       </p>
     </div>
   );
@@ -103,8 +108,14 @@ function getStatusText(
   const { game } = snapshot;
 
   if (game.status.type === "won") {
+    const winner = getPlayerIdentity(snapshot, game.status.winner, t);
+
+    if (winner.kind === "you") {
+      return t("game.youWin");
+    }
+
     return t("game.winner", {
-      player: playerName(snapshot.setup.players[game.status.winner], t)
+      player: winner.label
     });
   }
 
@@ -112,18 +123,38 @@ function getStatusText(
     return t("game.draw");
   }
 
-  const player = playerName(snapshot.setup.players[game.status.currentPlayer], t);
+  const player = getPlayerIdentity(snapshot, game.status.currentPlayer, t);
 
   if (snapshot.aiThinking) {
-    return t("game.aiThinking", { player });
+    return t("game.aiThinking", { player: player.label });
   }
 
-  return t("game.turn", { player });
+  if (player.kind === "you") {
+    return t("game.yourTurn");
+  }
+
+  return t("game.turn", { player: player.label });
 }
 
-function playerName(player: PlayerConfig, t: Translator): string {
-  if (player.kind === "ai") {
-    return t("players.ai");
+function getPlayerIdentity(
+  snapshot: Extract<GameSnapshot, { phase: "playing" }>,
+  player: PlayerId,
+  t: Translator
+): PlayerIdentity {
+  const config = snapshot.setup.players[player];
+  const hasAiPlayer = Object.values(snapshot.setup.players).some(
+    (playerConfig) => playerConfig.kind === "ai"
+  );
+
+  if (config.kind === "ai") {
+    return { kind: "ai", label: t("players.ai") };
   }
-  return player.id === "red" ? t("players.red") : t("players.yellow");
+
+  if (hasAiPlayer) {
+    return { kind: "you", label: t("players.you") };
+  }
+
+  return player === "red"
+    ? { kind: "player1", label: t("players.player1") }
+    : { kind: "player2", label: t("players.player2") };
 }
