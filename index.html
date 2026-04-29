@@ -4,11 +4,133 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f8fafc" />
+    <meta name="google-site-verification" content="OWwNOEZWqmAglz5IrEs3RXp3Zaw37DyHwfJqmliL0qM" />
+
+    <title>Connect 4 — Free Online Game with AI Opponents</title>
+    <meta
+      name="description"
+      content="Play Connect 4 free online or offline. Local 2-player pass-and-play, four AI difficulty levels including a strong solver, and English, Hebrew, and Thai. No signup, no ads."
+    />
+
+    <link rel="canonical" href="https://connect-4-two-tawny.vercel.app/" />
+
     <link rel="icon" type="image/svg+xml" href="/pwa-icon.svg" />
-    <title>Connect 4</title>
+    <link rel="apple-touch-icon" href="/pwa-icon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Connect 4" />
+    <meta property="og:title" content="Connect 4 — Free Online Game with AI Opponents" />
+    <meta
+      property="og:description"
+      content="Play Connect 4 free online or offline. Local 2-player pass-and-play and four AI difficulty levels."
+    />
+    <meta property="og:url" content="https://connect-4-two-tawny.vercel.app/" />
+    <!-- TODO(seo): generate a 1200x600 (2:1) og-image.png and place it in public/. -->
+    <meta property="og:image" content="https://connect-4-two-tawny.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="600" />
+    <meta property="og:image:alt" content="Connect 4 game board" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="he_IL" />
+    <meta property="og:locale:alternate" content="th_TH" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Connect 4 — Free Online Game with AI Opponents" />
+    <meta
+      name="twitter:description"
+      content="Play Connect 4 free online or offline. Local 2-player and four AI difficulty levels."
+    />
+    <meta name="twitter:image" content="https://connect-4-two-tawny.vercel.app/og-image.png" />
+    <meta name="twitter:image:alt" content="Connect 4 game board" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://connect-4-two-tawny.vercel.app/#website",
+            "url": "https://connect-4-two-tawny.vercel.app/",
+            "name": "Connect 4",
+            "description": "Free online Connect 4 with local multiplayer and AI opponents.",
+            "inLanguage": ["en", "he", "th"]
+          },
+          {
+            "@type": "VideoGame",
+            "@id": "https://connect-4-two-tawny.vercel.app/#game",
+            "name": "Connect 4",
+            "url": "https://connect-4-two-tawny.vercel.app/",
+            "description": "Connect 4 (also known as Four in a Row) is a two-player connection strategy game. Drop discs into a vertical 7-by-6 grid and be the first to align four discs in a row, column, or diagonal.",
+            "applicationCategory": "GameApplication",
+            "genre": "Strategy",
+            "gamePlatform": "Web Browser",
+            "playMode": ["SinglePlayer", "MultiPlayer"],
+            "operatingSystem": "Any",
+            "inLanguage": ["en", "he", "th"],
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "isAccessibleForFree": true
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://connect-4-two-tawny.vercel.app/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How do you win Connect 4?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Be the first player to line up four of your discs in a row horizontally, vertically, or diagonally on the 7-by-6 grid. If the grid fills up with no four-in-a-row, the game is a draw."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is this Connect 4 game free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Connect 4 is free to play in your browser with no signup, no ads, and no in-game purchases."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does it work offline?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. The app is a Progressive Web App. After your first visit, gameplay works fully offline, and you can install it to your home screen."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What AI difficulty levels are available?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Four levels: Easy, Medium, Hard, and Very Hard. Easy through Hard use minimax with alpha-beta pruning. Very Hard uses a worker-backed WebAssembly solver with bitboards, a transposition table, and an opening book."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <h1>Connect 4</h1>
+      <p>
+        Connect 4 is a two-player connection strategy game played on a vertical 7-by-6
+        grid. Players take turns dropping discs into the columns; the first to align
+        four of their discs in a row, column, or diagonal wins. Play locally on one
+        device with a friend, or challenge an AI opponent at four difficulty levels.
+        The app is free, works offline as an installable PWA, and is available in
+        English, Hebrew, and Thai.
+      </p>
+      <noscript>
+        <p>This game requires JavaScript. Please enable JavaScript to play.</p>
+      </noscript>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

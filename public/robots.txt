@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://connect-4-two-tawny.vercel.app/sitemap.xml
