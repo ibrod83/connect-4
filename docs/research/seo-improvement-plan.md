@@ -53,7 +53,7 @@ The current `<h1>` + paragraph is ~70 words. AI-Overview citation correlates wit
 - **What is Connect 4** — origin (Milton Bradley, 1974), rule summary.
 - **How to play** — 4–6 sentences on the drop mechanic, victory conditions.
 - **Strategy basics** — center column control, double-threat traps, why the first player has a theoretical winning strategy.
-- **About this app** — offline play, AI levels, languages.
+- **About this app** — AI levels, languages.
 
 Aim for 300–500 words, sub-headed with `<h2>` for skim-readability. This is what Wave-1 crawlers and AI agents see.
 

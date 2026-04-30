@@ -14,7 +14,7 @@ React connects to that controller through a custom hook using `useSyncExternalSt
 
 ## i18n and RTL
 
-Translations are bundled locally through `i18next` and `react-i18next`, so language switching works offline and does not depend on a backend or CDN.
+Translations are bundled locally through `i18next` and `react-i18next`.
 
 The app updates the root document attributes on language change:
 

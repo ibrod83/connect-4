@@ -84,7 +84,7 @@ This document is the short future-session reference for the main architectural d
 ## Network and Caching
 
 - Gameplay requires no network calls; all game logic, AI, and translations run client-side.
-- Static assets are served from the CDN with content-hashed filenames; there is no service worker, no precache, and no offline support.
+- Static assets are served from the CDN with content-hashed filenames.
 
 ## Testing Expectations
 

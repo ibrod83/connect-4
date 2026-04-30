@@ -2,7 +2,7 @@
 
 ## Summary
 
-Build a browser-only Connect 4 MVP with React, Vite, TypeScript, Tailwind CSS, and PWA support. The app runs fully in the frontend, supports offline play after first load, and keeps game rules, state transitions, starter selection, AI, and orchestration outside React UI components.
+Build a browser-only Connect 4 MVP with React, Vite, TypeScript, and Tailwind CSS. The app runs fully in the frontend and keeps game rules, state transitions, starter selection, AI, and orchestration outside React UI components.
 
 The MVP supports:
 
@@ -30,7 +30,7 @@ React connects to the non-React controller through a custom hook using `useSyncE
 - The controller snapshot includes `legalMoves`, so the UI can disable invalid columns without importing rule logic.
 - Random starter resolution happens once inside the logic/controller layer.
 - If AI is the resolved starter, the controller schedules the opening AI move automatically.
-- Translations are bundled locally so language switching works offline.
+- Translations are bundled locally with the app.
 - The root document gets updated with `lang` and `dir` on language changes.
 - The game board itself is always rendered with `dir="ltr"` so RTL languages do not remap column indexes.
 
@@ -54,7 +54,6 @@ React connects to the non-React controller through a custom hook using `useSyncE
 9. Built setup UI for game mode, player names, AI difficulty, starter selection, and language selection.
 10. Built game UI with board, column controls, current status, resolved starter, winner/draw state, restart, and new game controls.
 11. Styled the app with Tailwind for simple responsive LTR/RTL layouts.
-12. Added PWA manifest and service worker precaching for offline play.
 
 ## Test Coverage
 
@@ -79,7 +78,6 @@ Results:
 - TypeScript lint passed.
 - 28 tests passed.
 - Production build passed.
-- PWA service worker and precache files were generated.
 - Runtime dependency audit passed with 0 vulnerabilities.
 
 ## Remaining Notes
