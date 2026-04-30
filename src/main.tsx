@@ -5,16 +5,7 @@ import App from "./App";
 import "./i18n/i18n";
 import "./index.css";
 
-registerSW({
-  immediate: true,
-  onRegisteredSW(_swUrl, registration) {
-    if (registration) {
-      setInterval(() => {
-        registration.update().catch(() => {});
-      }, 60 * 1000);
-    }
-  }
-});
+registerSW({ immediate: true });
 
 if ("serviceWorker" in navigator) {
   let reloading = false;
