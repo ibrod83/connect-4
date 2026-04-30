@@ -11,10 +11,6 @@ export const resources = {
       },
       setup: {
         title: "New game",
-        gameMode: "Mode",
-        vsAi: "Human vs AI",
-        playground: "Playground",
-        playgroundHelp: "Play both sides on the same device to experiment with moves and positions.",
         yourColor: "Your color",
         difficulty: "Difficulty",
         starter: "Starts",
@@ -65,10 +61,6 @@ export const resources = {
       },
       setup: {
         title: "משחק חדש",
-        gameMode: "מצב",
-        vsAi: "שחקן מול מחשב",
-        playground: "מגרש ניסוי",
-        playgroundHelp: "אפשר לשחק את שני הצדדים באותו מכשיר כדי לנסות מהלכים ורעיונות.",
         yourColor: "הצבע שלך",
         difficulty: "רמה",
         starter: "מי מתחיל",
@@ -119,10 +111,6 @@ export const resources = {
       },
       setup: {
         title: "เกมใหม่",
-        gameMode: "โหมด",
-        vsAi: "ผู้เล่นปะทะ AI",
-        playground: "โหมดทดลอง",
-        playgroundHelp: "เล่นได้ทั้งสองฝ่ายบนเครื่องเดียว เพื่อทดลองการเดินและแนวคิดต่าง ๆ",
         yourColor: "สีของคุณ",
         difficulty: "ระดับความยาก",
         starter: "เริ่มก่อน",

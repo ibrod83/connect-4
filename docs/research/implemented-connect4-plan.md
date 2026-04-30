@@ -7,7 +7,6 @@ Build a browser-only Connect 4 MVP with React, Vite, TypeScript, Tailwind CSS, a
 The MVP supports:
 
 - Human vs AI.
-- Local pass-and-play human vs human.
 - AI difficulty levels.
 - Starter selection: Red, Yellow, or Random.
 - English and Hebrew UI with LTR/RTL support.
@@ -86,5 +85,4 @@ Results:
 ## Remaining Notes
 
 - Full `npm audit` still reports dev-only findings through the PWA build toolchain. Runtime dependencies are clean under `npm audit --omit=dev`.
-- MVP local multiplayer is pass-and-play on one browser/device.
 - Dice-based starter selection was explicitly removed; Random replaced it.

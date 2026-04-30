@@ -85,13 +85,13 @@ describe("GameScreen", () => {
     expect(screen.queryByText("Red")).not.toBeInTheDocument();
   });
 
-  it("shows hard as the default board difficulty when AI level is omitted", () => {
+  it("shows very hard as the default board difficulty when AI level is omitted", () => {
     render(
       <GameScreen controller={controller} snapshot={playingSnapshotWithoutExplicitAiLevel()} />
     );
 
     expect(screen.getByText("Difficulty")).toBeInTheDocument();
-    expect(screen.getByText("Hard")).toBeInTheDocument();
+    expect(screen.getByText("Very hard")).toBeInTheDocument();
   });
 
   it("shows numbered player identity in local human games", () => {

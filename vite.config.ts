@@ -13,7 +13,7 @@ export default defineConfig({
       manifest: {
         name: "Connect 4",
         short_name: "Connect 4",
-        description: "Offline Connect 4 with local multiplayer and AI.",
+        description: "Offline Connect 4 against AI opponents at four difficulty levels.",
         categories: ["games"],
         theme_color: "#f8fafc",
         background_color: "#f8fafc",

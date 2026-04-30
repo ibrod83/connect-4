@@ -30,6 +30,7 @@ export function GameBoard({
   const { t } = useTranslation();
   const winningCells =
     game.status.type === "won" ? game.status.winningCells : ([] as Position[]);
+  const isDraw = game.status.type === "draw";
 
   const tryDrop = (column: number) => {
     if (!disabled && legalMoves.includes(column)) {
@@ -60,7 +61,11 @@ export function GameBoard({
 
   return (
     <div className="w-full" dir="ltr" data-testid="game-board">
-      <div className="relative rounded-lg bg-blue-700 p-2 shadow-sm sm:p-4">
+      <div
+        className={`relative rounded-lg bg-blue-700 p-2 shadow-sm sm:p-4 ${
+          isDraw ? "motion-safe:animate-draw-shake" : ""
+        }`}
+      >
         <div
           aria-label={t("game.board")}
           className={`grid gap-1.5 rounded-md outline-none sm:gap-4 ${
@@ -76,9 +81,10 @@ export function GameBoard({
         >
           {game.board.flatMap((row, rowIndex) =>
             row.map((cell, columnIndex) => {
-              const winning = winningCells.some(
+              const winningIndex = winningCells.findIndex(
                 (position) => position.row === rowIndex && position.column === columnIndex
               );
+              const winning = winningIndex >= 0;
 
               return (
                 <span
@@ -95,7 +101,10 @@ export function GameBoard({
                         : cell === "yellow"
                           ? `border-yellow-300 bg-yellow-300 ${CHECKER_CLASS}`
                           : EMPTY_CELL_CLASS
-                    } ${winning ? "ring-2 ring-white sm:ring-4" : ""}`}
+                    } ${winning ? "ring-2 ring-white motion-safe:animate-win-pop sm:ring-4" : ""}`}
+                    style={
+                      winning ? { animationDelay: `${winningIndex * 110}ms` } : undefined
+                    }
                   />
                 </span>
               );

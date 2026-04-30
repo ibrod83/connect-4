@@ -27,11 +27,11 @@ This document is the short future-session reference for the main architectural d
 
 ## Player Model
 
-- Local multiplayer means pass-and-play on one browser/device.
+- The app is human-vs-AI only. The setup screen does not expose a local pass-and-play option.
 - Human and AI players use the same turn flow through `PlayerConfig`.
 - A human-vs-AI game is just a setup where one player has `kind: "ai"`.
 - If the resolved starter is AI, the controller schedules the opening AI move automatically.
-- User-facing player identity is role-based, not color-based: human-vs-AI displays `You` and `AI`; local pass-and-play displays `Player 1` and `Player 2`.
+- User-facing player identity is role-based, not color-based: the human player displays `You` and the opponent displays `AI`.
 - Red and yellow remain piece colors and are shown as color markers beside the player identity.
 
 ## Starter Selection

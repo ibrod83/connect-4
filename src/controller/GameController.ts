@@ -73,7 +73,7 @@ export function createDefaultSetup(): GameSetup {
       yellow: {
         id: "yellow",
         kind: "ai",
-        aiLevel: "hard"
+        aiLevel: "very_hard"
       }
     }
   };
@@ -238,7 +238,7 @@ class ConnectFourController implements GameController {
     }
 
     const aiPlayer = snapshot.game.status.currentPlayer;
-    const aiLevel = snapshot.setup.players[aiPlayer].aiLevel ?? "hard";
+    const aiLevel = snapshot.setup.players[aiPlayer].aiLevel ?? "very_hard";
 
     try {
       const signal = this.aiAbortController?.signal;

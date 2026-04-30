@@ -41,7 +41,12 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
               player: getPlayerIdentity(snapshot, snapshot.resolvedStarter, t).label
             })}
           </p>
-          <h1 className="mt-1 text-2xl font-semibold text-zinc-950">{statusText}</h1>
+          <h1
+            key={statusText}
+            className="mt-1 text-2xl font-semibold text-zinc-950 motion-safe:animate-status-pop"
+          >
+            {statusText}
+          </h1>
           {aiDifficulty ? (
             <p className="mt-3 flex items-center gap-2 text-sm">
               <span className="font-semibold text-zinc-500">{t("setup.difficulty")}</span>
@@ -85,7 +90,7 @@ function getAiDifficulty(snapshot: Extract<GameSnapshot, { phase: "playing" }>):
     (playerConfig) => playerConfig.kind === "ai"
   );
 
-  return aiPlayer?.aiLevel ?? (aiPlayer ? "hard" : null);
+  return aiPlayer?.aiLevel ?? (aiPlayer ? "very_hard" : null);
 }
 
 function PlayerBadge({

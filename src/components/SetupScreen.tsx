@@ -1,4 +1,4 @@
-import { Bot, Play, UsersRound } from "lucide-react";
+import { Play } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { AiLevel, GameSetup, PlayerId, StartMode } from "../game-core";
@@ -7,15 +7,12 @@ type SetupScreenProps = {
   onStart: (setup: GameSetup) => void;
 };
 
-type GameMode = "ai" | "local";
-
 const levels: AiLevel[] = ["easy", "medium", "hard", "very_hard"];
 
 export function SetupScreen({ onStart }: SetupScreenProps) {
   const { t } = useTranslation();
-  const [mode, setMode] = useState<GameMode>("ai");
   const [humanColor, setHumanColor] = useState<PlayerId>("red");
-  const [aiLevel, setAiLevel] = useState<AiLevel>("hard");
+  const [aiLevel, setAiLevel] = useState<AiLevel>("very_hard");
   const [startMode, setStartMode] = useState<StartMode>("red");
 
   const aiColor: PlayerId = humanColor === "red" ? "yellow" : "red";
@@ -26,42 +23,29 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
     setStartMode((prev) => (prev === "random" ? prev : prev === "red" ? "yellow" : "red"));
   };
 
-  const startOptions: { value: StartMode; labelKey: string }[] =
-    mode === "ai"
-      ? [
-          { value: humanColor, labelKey: "players.you" },
-          { value: aiColor, labelKey: "players.ai" },
-          { value: "random", labelKey: "setup.randomStarts" }
-        ]
-      : [
-          { value: "red", labelKey: "players.player1" },
-          { value: "yellow", labelKey: "players.player2" },
-          { value: "random", labelKey: "setup.randomStarts" }
-        ];
+  const startOptions: { value: StartMode; labelKey: string }[] = [
+    { value: humanColor, labelKey: "players.you" },
+    { value: aiColor, labelKey: "players.ai" },
+    { value: "random", labelKey: "setup.randomStarts" }
+  ];
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     onStart({
       startMode,
-      players:
-        mode === "ai"
-          ? {
-              red: {
-                id: "red",
-                kind: humanColor === "red" ? "human" : "ai",
-                aiLevel: humanColor === "red" ? undefined : aiLevel
-              },
-              yellow: {
-                id: "yellow",
-                kind: humanColor === "yellow" ? "human" : "ai",
-                aiLevel: humanColor === "yellow" ? undefined : aiLevel
-              }
-            }
-          : {
-              red: { id: "red", kind: "human" },
-              yellow: { id: "yellow", kind: "human" }
-            }
+      players: {
+        red: {
+          id: "red",
+          kind: humanColor === "red" ? "human" : "ai",
+          aiLevel: humanColor === "red" ? undefined : aiLevel
+        },
+        yellow: {
+          id: "yellow",
+          kind: humanColor === "yellow" ? "human" : "ai",
+          aiLevel: humanColor === "yellow" ? undefined : aiLevel
+        }
+      }
     });
   };
 
@@ -76,82 +60,51 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
 
       <fieldset className="mb-5">
         <legend className="mb-2 text-sm font-semibold text-zinc-700">
-          {t("setup.gameMode")}
+          {t("setup.yourColor")}
         </legend>
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-2">
           <SegmentButton
-            active={mode === "ai"}
-            icon={<Bot aria-hidden="true" className="size-4" />}
-            label={t("setup.vsAi")}
-            onClick={() => setMode("ai")}
+            active={humanColor === "red"}
+            icon={
+              <span
+                aria-hidden="true"
+                className="size-4 rounded-full border border-red-600 bg-red-500"
+              />
+            }
+            label={t("players.red")}
+            onClick={() => changeHumanColor("red")}
           />
           <SegmentButton
-            active={mode === "local"}
-            icon={<UsersRound aria-hidden="true" className="size-4" />}
-            label={t("setup.playground")}
-            onClick={() => setMode("local")}
+            active={humanColor === "yellow"}
+            icon={
+              <span
+                aria-hidden="true"
+                className="size-4 rounded-full border border-yellow-400 bg-yellow-300"
+              />
+            }
+            label={t("players.yellow")}
+            onClick={() => changeHumanColor("yellow")}
           />
         </div>
-        {mode === "local" ? (
-          <p className="mt-3 rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-sm leading-6 text-blue-950">
-            {t("setup.playgroundHelp")}
-          </p>
-        ) : null}
       </fieldset>
 
-      {mode === "ai" ? (
-        <fieldset className="mb-5">
-          <legend className="mb-2 text-sm font-semibold text-zinc-700">
-            {t("setup.yourColor")}
-          </legend>
-          <div className="grid grid-cols-2 gap-2">
-            <SegmentButton
-              active={humanColor === "red"}
-              icon={
-                <span
-                  aria-hidden="true"
-                  className="size-4 rounded-full border border-red-600 bg-red-500"
-                />
-              }
-              label={t("players.red")}
-              onClick={() => changeHumanColor("red")}
-            />
-            <SegmentButton
-              active={humanColor === "yellow"}
-              icon={
-                <span
-                  aria-hidden="true"
-                  className="size-4 rounded-full border border-yellow-400 bg-yellow-300"
-                />
-              }
-              label={t("players.yellow")}
-              onClick={() => changeHumanColor("yellow")}
-            />
-          </div>
-        </fieldset>
-      ) : null}
-
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {mode === "ai" ? (
-          <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-zinc-700">
-              {t("setup.difficulty")}
-            </span>
-            <select
-              className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-950 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-              value={aiLevel}
-              onChange={(event) => setAiLevel(event.target.value as AiLevel)}
-            >
-              {levels.map((level) => (
-                <option key={level} value={level}>
-                  {t(`difficulty.${level}`)}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : (
-          <div className="hidden sm:block" />
-        )}
+        <label className="block">
+          <span className="mb-1 block text-sm font-semibold text-zinc-700">
+            {t("setup.difficulty")}
+          </span>
+          <select
+            className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-950 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+            value={aiLevel}
+            onChange={(event) => setAiLevel(event.target.value as AiLevel)}
+          >
+            {levels.map((level) => (
+              <option key={level} value={level}>
+                {t(`difficulty.${level}`)}
+              </option>
+            ))}
+          </select>
+        </label>
 
         <label className="block">
           <span className="mb-1 block text-sm font-semibold text-zinc-700">
