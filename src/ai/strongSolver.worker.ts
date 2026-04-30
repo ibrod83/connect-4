@@ -41,6 +41,7 @@ async function handleChooseMove(message: StrongSolverWorkerRequest): Promise<voi
     const aiPlayer = await getAiPlayer();
     position = Position.fromMoves(message.moves);
     const column = aiPlayer.getMove(position);
+    console.log('column from wasm',column)
     postResponse({
       type: "move",
       id: message.id,

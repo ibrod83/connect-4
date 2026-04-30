@@ -22,14 +22,35 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
+            src: "/pwa-icon-192.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "any"
+          },
+          {
+            src: "/pwa-icon-512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any"
+          },
+          {
             src: "/pwa-icon.svg",
             sizes: "any",
             type: "image/svg+xml",
             purpose: "any"
+          },
+          {
+            src: "/pwa-maskable-192.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "maskable"
+          },
+          {
+            src: "/pwa-maskable-512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable"
           }
-          // TODO(seo): add a separate maskable PNG icon (192x192 and 512x512) with the
-          // required ~80% safe zone. The current SVG has no safe zone, so it should not
-          // be advertised as `purpose: "maskable"` — Android would clip the corners.
         ]
       },
       workbox: {
