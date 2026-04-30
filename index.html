@@ -115,17 +115,34 @@
         ]
       }
     </script>
+
+    <style>
+      /* Visually-hidden fallback for crawlers — prevents flash before React mounts. */
+      .seo-fallback {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        border: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
+    </style>
   </head>
   <body>
     <div id="root">
-      <h1>Connect 4</h1>
-      <p>
-        Connect 4 is a two-player connection strategy game played on a vertical 7-by-6
-        grid. Players take turns dropping discs into the columns; the first to align
-        four of their discs in a row, column, or diagonal wins. Challenge an AI
-        opponent at four difficulty levels. The app is free, works offline as an
-        installable PWA, and is available in English, Hebrew, and Thai.
-      </p>
+      <div class="seo-fallback">
+        <h1>Connect 4</h1>
+        <p>
+          Connect 4 is a two-player connection strategy game played on a vertical 7-by-6
+          grid. Players take turns dropping discs into the columns; the first to align
+          four of their discs in a row, column, or diagonal wins. Challenge an AI
+          opponent at four difficulty levels. The app is free, works offline as an
+          installable PWA, and is available in English, Hebrew, and Thai.
+        </p>
+      </div>
       <noscript>
         <p>This game requires JavaScript. Please enable JavaScript to play.</p>
       </noscript>
