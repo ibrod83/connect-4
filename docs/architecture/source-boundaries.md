@@ -108,7 +108,7 @@ Responsibilities:
 
 Rules for future edits:
 
-- Keep translations local so the app works offline.
+- Keep translations local; bundle them with the app.
 - Add new languages to `supportedLanguages` and `resources` together.
 - Use `i18n.dir(language)` for direction.
 - Language picker labels are rendered as endonyms via `Intl.DisplayNames`, so language names are not stored in `resources` - the picker stays correct regardless of the active UI language.

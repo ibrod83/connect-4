@@ -57,7 +57,7 @@ This document is the short future-session reference for the main architectural d
 
 ## i18n and RTL
 
-- The app uses bundled `i18next` and `react-i18next` resources so language switching works offline.
+- The app uses bundled `i18next` and `react-i18next` resources.
 - Bundled languages are English, Hebrew, and Thai.
 - Initial language is auto-detected via `i18next-browser-languagedetector` (client-side signals only, no IP); `supportedLngs` restricts detection to bundled languages, with English as the fallback. User selection persists in `localStorage`.
 - On language change, the app updates:
@@ -81,12 +81,10 @@ This document is the short future-session reference for the main architectural d
 - A `popstate` listener calls `resetToSetup()` when the browser back button is pressed during a game, so back returns to the setup screen instead of leaving the app.
 - Leaving the playing phase via the "New game" button calls `history.back()` to keep browser history in sync; the popstate handler is a no-op when phase has already changed.
 
-## Offline/PWA
+## Network and Caching
 
-- The app is a Vite PWA using `vite-plugin-pwa`.
-- The service worker precaches the app shell and built assets.
-- Gameplay requires no network calls.
-- Translation resources are local and included in the bundle.
+- Gameplay requires no network calls; all game logic, AI, and translations run client-side.
+- Static assets are served from the CDN with content-hashed filenames; there is no service worker, no precache, and no offline support.
 
 ## Testing Expectations
 
@@ -99,5 +97,5 @@ This document is the short future-session reference for the main architectural d
 ## Dependency Boundary
 
 - Runtime dependencies are limited to React, i18n, UI icons, and the local WASM Connect 4 solver.
-- Build/test/PWA tools live in `devDependencies`.
+- Build/test tools live in `devDependencies`.
 - `npm audit --omit=dev` should remain clean for runtime dependencies.
