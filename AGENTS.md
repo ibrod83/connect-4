@@ -8,6 +8,7 @@
 - Keep React as the render and dispatch layer. Do not put game rules, turn logic, starter resolution, or AI decisions in React components.
 - Keep the board rendered with `dir="ltr"` so RTL languages do not remap column indexes.
 - Keep translations local; bundle them with the app.
+- Do not start the local dev server; the user will run it manually when needed.
 - When changing behavior, run the relevant checks from `package.json`: `npm run lint`, `npm test`, and `npm run build`.
 
 ## Documentation Placement
