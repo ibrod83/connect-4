@@ -31,7 +31,7 @@ type GameBoardProps = {
 const HOLE_BASE_CLASS =
   "absolute inset-0 rounded-full border-2 border-black/70 sm:border-4";
 const EMPTY_CELL_CLASS =
-  "bg-gradient-to-b from-zinc-300 to-zinc-50 shadow-[inset_0_5px_8px_rgba(0,0,0,0.5),inset_0_-2px_3px_rgba(255,255,255,0.7)]";
+  "bg-gradient-to-b from-zinc-300 to-zinc-50 shadow-[inset_0_3px_5px_rgba(0,0,0,0.5),inset_0_-1px_2px_rgba(255,255,255,0.7)] sm:shadow-[inset_0_5px_8px_rgba(0,0,0,0.5),inset_0_-2px_3px_rgba(255,255,255,0.7)]";
 const CHECKER_OVERLAY_CLASS =
   "absolute inset-0 rounded-full border-2 border-transparent bg-clip-padding sm:border-4";
 const RED_CHECKER_CLASS =
