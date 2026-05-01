@@ -34,7 +34,6 @@ export function GameBoard({
   const winningCells =
     game.status.type === "won" ? game.status.winningCells : ([] as Position[]);
   const isDraw = game.status.type === "draw";
-  const lastMove = game.moveHistory[game.moveHistory.length - 1] ?? null;
 
   const tryDrop = (column: number) => {
     if (!disabled && legalMoves.includes(column)) {
@@ -89,11 +88,6 @@ export function GameBoard({
                 (position) => position.row === rowIndex && position.column === columnIndex
               );
               const winning = winningIndex >= 0;
-              const isLastMove =
-                !winning &&
-                lastMove !== null &&
-                lastMove.row === rowIndex &&
-                lastMove.column === columnIndex;
 
               return (
                 <span
@@ -110,9 +104,7 @@ export function GameBoard({
                         : cell === "yellow"
                           ? YELLOW_CHECKER_CLASS
                           : EMPTY_CELL_CLASS
-                    } ${winning ? "motion-safe:animate-win-pop" : ""} ${
-                      isLastMove ? "motion-safe:animate-drop-pulse" : ""
-                    }`}
+                    } ${winning ? "motion-safe:animate-win-pop" : ""}`}
                     style={
                       winning ? { animationDelay: `${winningIndex * 110}ms` } : undefined
                     }
