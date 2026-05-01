@@ -2,7 +2,7 @@
 
 Tracks SEO work that has been planned but not yet done for the 4 in a Row site.
 
-**Background:** the initial pass (commits `ec30093` and `25553d3`, April 2026) added meta tags, JSON-LD (`WebSite`, `VideoGame`, `FAQPage`), `robots.txt`, `sitemap.xml`, and the Google Search Console verification meta tag. The site is deployed at `https://connect-4-two-tawny.vercel.app/`. Reference for foundations: `.claude/skills/seo/SKILL.md`.
+**Background:** the initial pass (commits `ec30093` and `25553d3`, April 2026) added meta tags, JSON-LD (`WebSite`, `VideoGame`, `FAQPage`), `robots.txt`, `sitemap.xml`, and the Google Search Console verification meta tag. The site is deployed at `https://unbeatable-4-in-a-row.vercel.app/`. Reference for foundations: `.claude/skills/seo/SKILL.md`.
 
 ---
 

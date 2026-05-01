@@ -2,7 +2,7 @@
 
 Frontend-only 4 in a Row game built with React, TypeScript, Vite, and Tailwind CSS.
 
-**Production site:** [https://connect-4-two-tawny.vercel.app/](https://connect-4-two-tawny.vercel.app/)
+**Production site:** [https://unbeatable-4-in-a-row.vercel.app/](https://unbeatable-4-in-a-row.vercel.app/)
 
 ## Features
 

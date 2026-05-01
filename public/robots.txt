@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://connect-4-two-tawny.vercel.app/sitemap.xml
+Sitemap: https://unbeatable-4-in-a-row.vercel.app/sitemap.xml
