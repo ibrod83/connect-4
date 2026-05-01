@@ -1,4 +1,4 @@
-# Connect 4 Architecture Decisions
+# 4 in a Row Architecture Decisions
 
 This document is the short future-session reference for the main architectural decisions in this MVP.
 
@@ -66,7 +66,7 @@ This document is the short future-session reference for the main architectural d
   - `document.documentElement.dir`
 - Direction comes from `i18n.dir(language)`.
 - Surrounding UI follows LTR/RTL direction.
-- The Connect 4 board is explicitly rendered with `dir="ltr"` so locale direction does not remap column indexes.
+- The 4 in a Row board is explicitly rendered with `dir="ltr"` so locale direction does not remap column indexes.
 
 ## Styling
 
@@ -97,6 +97,6 @@ This document is the short future-session reference for the main architectural d
 
 ## Dependency Boundary
 
-- Runtime dependencies are limited to React, i18n, UI icons, and the local WASM Connect 4 solver.
+- Runtime dependencies are limited to React, i18n, UI icons, and the local WASM 4 in a Row solver.
 - Build/test tools live in `devDependencies`.
 - `npm audit --omit=dev` should remain clean for runtime dependencies.

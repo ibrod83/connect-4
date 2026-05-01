@@ -1,8 +1,8 @@
-# Implemented Web Connect 4 MVP Plan
+# Implemented Web 4 in a Row MVP Plan
 
 ## Summary
 
-Build a browser-only Connect 4 MVP with React, Vite, TypeScript, and Tailwind CSS. The app runs fully in the frontend and keeps game rules, state transitions, starter selection, AI, and orchestration outside React UI components.
+Build a browser-only 4 in a Row MVP with React, Vite, TypeScript, and Tailwind CSS. The app runs fully in the frontend and keeps game rules, state transitions, starter selection, AI, and orchestration outside React UI components.
 
 The MVP supports:
 
@@ -43,7 +43,7 @@ React connects to the non-React controller through a custom hook using `useSyncE
 
 ## Implemented Steps
 
-1. Scaffolded Vite React TypeScript app with Vitest, React Testing Library, Tailwind CSS, `i18next`, `react-i18next`, and `vite-plugin-pwa`.
+1. Scaffolded Vite React TypeScript app with Vitest, React Testing Library, Tailwind CSS, `i18next`, and `react-i18next`.
 2. Added research note for React/controller and i18n/RTL decisions.
 3. Implemented pure `game-core` with initial state, legal moves, immutable move application, win/draw detection, and starter resolution.
 4. Implemented AI with minimax, alpha-beta pruning, heuristic scoring, and difficulty mapping.
@@ -82,5 +82,5 @@ Results:
 
 ## Remaining Notes
 
-- Full `npm audit` still reports dev-only findings through the PWA build toolchain. Runtime dependencies are clean under `npm audit --omit=dev`.
+- Runtime dependencies are clean under `npm audit --omit=dev`.
 - Dice-based starter selection was explicitly removed; Random replaced it.

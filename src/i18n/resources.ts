@@ -4,7 +4,7 @@ export const resources = {
   en: {
     translation: {
       app: {
-        title: "Connect 4"
+        title: "4 in a Row"
       },
       language: {
         label: "Language"
@@ -30,7 +30,7 @@ export const resources = {
         very_hard: "Very hard"
       },
       game: {
-        board: "Connect 4 board",
+        board: "4 in a Row board",
         turn: "{{player}}'s turn",
         yourTurn: "Your turn",
         aiThinking: "{{player}} is thinking",

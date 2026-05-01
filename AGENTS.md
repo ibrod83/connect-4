@@ -2,7 +2,7 @@
 
 ## Repository Guidance
 
-- This is a frontend-only Connect 4 MVP. Do not add backend, login, auth, online multiplayer, or persisted match history unless explicitly requested.
+- This is a frontend-only 4 in a Row MVP. Do not add backend, login, auth, online multiplayer, or persisted match history unless explicitly requested.
 - Read `docs/architecture/source-boundaries.md` before changing files under `src/`.
 - For broader design context, read `docs/architecture/architecture-decisions.md`.
 - Keep React as the render and dispatch layer. Do not put game rules, turn logic, starter resolution, or AI decisions in React components.

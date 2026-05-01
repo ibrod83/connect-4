@@ -1,5 +1,5 @@
 {
-  "name": "connect4",
+  "name": "unbeatable-4-in-a-row",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -32,7 +32,6 @@
     "tailwindcss": "^4.1.0",
     "typescript": "^5.8.0",
     "vite": "^7.0.0",
-    "vite-plugin-pwa": "^1.0.0",
     "vitest": "^3.0.0"
   }
 }

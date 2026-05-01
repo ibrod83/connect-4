@@ -17,7 +17,6 @@
     "jsx": "react-jsx",
     "types": [
       "vite/client",
-      "vite-plugin-pwa/client",
       "vitest/globals",
       "@testing-library/jest-dom"
     ]

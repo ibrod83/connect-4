@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
-  <title id="title">Connect 4</title>
+  <title id="title">4 in a Row</title>
   <rect width="512" height="512" rx="96" fill="#f8fafc"/>
   <rect x="76" y="108" width="360" height="296" rx="34" fill="#1d4ed8"/>
   <g fill="#f8fafc">

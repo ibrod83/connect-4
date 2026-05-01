@@ -1,8 +1,8 @@
 # SEO Improvement Plan
 
-Tracks SEO work that has been planned but not yet done for the Connect 4 PWA.
+Tracks SEO work that has been planned but not yet done for the 4 in a Row site.
 
-**Background:** the initial pass (commits `ec30093` and `25553d3`, April 2026) added meta tags, JSON-LD (`WebSite`, `VideoGame`, `FAQPage`), `robots.txt`, `sitemap.xml`, the Google Search Console verification meta tag, a PWA manifest fix, and a service-worker `navigateFallbackDenylist` for `/sitemap.xml` and `/robots.txt`. The site is deployed at `https://connect-4-two-tawny.vercel.app/`. Reference for foundations: `.claude/skills/seo/SKILL.md`.
+**Background:** the initial pass (commits `ec30093` and `25553d3`, April 2026) added meta tags, JSON-LD (`WebSite`, `VideoGame`, `FAQPage`), `robots.txt`, `sitemap.xml`, and the Google Search Console verification meta tag. The site is deployed at `https://connect-4-two-tawny.vercel.app/`. Reference for foundations: `.claude/skills/seo/SKILL.md`.
 
 ---
 
@@ -11,8 +11,6 @@ Tracks SEO work that has been planned but not yet done for the Connect 4 PWA.
 These are explicit `TODO(seo):` markers a grep will surface:
 
 - **`public/og-image.png`** — 1200×600 (2:1 ratio per April 2026 spec). Without it, Facebook/X/LinkedIn shares render with no preview image. Referenced in `index.html` under `og:image` and `twitter:image`.
-- **Maskable PNG icon** — 192×192 and 512×512 PNG with ~80% safe zone. Add as a second icon entry in `vite.config.ts` PWA manifest with `purpose: "maskable"`. The current SVG has no safe zone, so it can't honestly claim maskable.
-- **`public/apple-touch-icon.png`** (180×180) — iOS Safari ignores SVG for "Add to Home Screen". The link tag in `index.html` currently falls back to the SVG.
 
 ---
 
@@ -50,7 +48,7 @@ If it's loading eagerly, fix by moving the worker spawn behind the difficulty se
 ### Expand the static intro in `index.html`
 The current `<h1>` + paragraph is ~70 words. AI-Overview citation correlates with content depth. Realistic expansion (still inside `#root`, replaced on hydrate):
 
-- **What is Connect 4** — origin (Milton Bradley, 1974), rule summary.
+- **What is 4 in a Row** — origin (Milton Bradley, 1974), rule summary.
 - **How to play** — 4–6 sentences on the drop mechanic, victory conditions.
 - **Strategy basics** — center column control, double-threat traps, why the first player has a theoretical winning strategy.
 - **About this app** — default AI-first Very Hard challenge, why the solver-backed computer is virtually unbeatable when it moves first, plus no-signup browser play.
@@ -62,7 +60,7 @@ Add alongside the existing graph:
 ```json
 {
   "@type": "HowTo",
-  "name": "How to play Connect 4",
+  "name": "How to play 4 in a Row",
   "step": [
     { "@type": "HowToStep", "text": "Choose a color and decide who starts." },
     { "@type": "HowToStep", "text": "Take turns dropping discs into one of seven columns." },
@@ -75,9 +73,9 @@ Google deprecated the HowTo SERP rich result in 2023 but still uses the schema f
 
 ### FAQ expansion
 Current FAQ has 4 entries, including a beatability question for the Very Hard AI. Realistic additions:
-- "Who goes first in Connect 4?"
-- "Is Connect 4 always winnable?" (yes — first player wins with perfect play)
-- "Can I play Connect 4 on my phone?" (yes — installable PWA)
+- "Who goes first in 4 in a Row?"
+- "Is 4 in a Row always winnable?" (yes — first player wins with perfect play)
+- "Can I play 4 in a Row on my phone?" (yes — runs in any mobile browser)
 - "What's the difference between the AI difficulty levels?" (expand beyond the current short answer only if it stays honest)
 
 Keep it honest — don't pad with manufactured questions.
@@ -102,7 +100,7 @@ Add a `vercel.json`:
   ]
 }
 ```
-HSTS is set automatically by Vercel. CSP is deferred — Tailwind v4, Vite, and the PWA register script all inject inline styles/scripts, so a working CSP needs hashes/nonces and is its own small project.
+HSTS is set automatically by Vercel. CSP is deferred — Tailwind v4 and Vite inject inline styles/scripts, so a working CSP needs hashes/nonces and is its own small project.
 
 ### Analytics
 Without analytics there's no way to tell which queries bring visitors. Per `AGENTS.md` this is a frontend-only MVP, so anything added must be client-only:
@@ -111,15 +109,6 @@ Without analytics there's no way to tell which queries bring visitors. Per `AGEN
 - **GA4** — free but needs cookie consent in EU.
 
 Optional but recommended once SEO actually starts producing impressions worth measuring.
-
-### PWA install screenshots
-Chrome 2026 uses the manifest `screenshots` array for a richer install prompt:
-```json
-"screenshots": [
-  { "src": "/screenshot-mobile.png", "sizes": "540x720", "form_factor": "narrow" },
-  { "src": "/screenshot-desktop.png", "sizes": "1280x720", "form_factor": "wide" }
-]
-```
 
 ---
 
@@ -150,7 +139,7 @@ Worth doing only if Hebrew/Thai search visibility becomes an explicit goal.
 
 These don't touch the repo but matter for ranking:
 - Mention the project in your GitHub README — provides one organic inbound link.
-- Submit to free PWA / web-game directories: `appsco.pe`, `progressier.com/store`, `pwa-directory.appspot.com`.
+- Submit to free web-game directories.
 - A `/r/webgames` or HN Show post — natural traffic and one decent backlink.
 
 ---

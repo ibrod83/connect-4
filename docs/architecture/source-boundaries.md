@@ -6,7 +6,7 @@ This document is the source-boundary reference for files under `src/`.
 
 ## Source Layout
 
-- `game-core`: pure Connect 4 rules and immutable state transitions.
+- `game-core`: pure 4 in a Row rules and immutable state transitions.
 - `ai`: pure AI decision logic.
 - `controller`: non-React runtime orchestration and subscriptions.
 - `hooks`: React adapters into non-React units.
@@ -18,7 +18,7 @@ Core rule, turn, starter, and AI decisions should not be implemented in React co
 
 ## Game Core
 
-`src/game-core` contains pure Connect 4 rules.
+`src/game-core` contains pure 4 in a Row rules.
 
 Responsibilities:
 
