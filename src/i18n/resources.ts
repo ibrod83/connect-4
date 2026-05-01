@@ -41,7 +41,8 @@ export const resources = {
         restart: "Restart",
         newGame: "New game",
         column: "Column {{column}}",
-        dropColumn: "Drop in column {{column}}"
+        dropColumn: "Drop in column {{column}}",
+        dropAnimation: "Drop animation"
       },
       players: {
         red: "Red",
@@ -93,7 +94,8 @@ export const resources = {
         restart: "התחל מחדש",
         newGame: "משחק חדש",
         column: "עמודה {{column}}",
-        dropColumn: "הנח בעמודה {{column}}"
+        dropColumn: "הנח בעמודה {{column}}",
+        dropAnimation: "אנימציית נפילה"
       },
       players: {
         red: "אדום",
@@ -145,7 +147,8 @@ export const resources = {
         restart: "เริ่มใหม่",
         newGame: "เกมใหม่",
         column: "คอลัมน์ {{column}}",
-        dropColumn: "หย่อนในคอลัมน์ {{column}}"
+        dropColumn: "หย่อนในคอลัมน์ {{column}}",
+        dropAnimation: "แอนิเมชันการหย่อน"
       },
       players: {
         red: "แดง",
