@@ -14,11 +14,14 @@ type GameBoardProps = {
   onDrop: (column: number) => void;
 };
 
-const CELL_BASE_CLASS = "block size-full rounded-full border";
+const CELL_BASE_CLASS =
+  "flex size-full items-center justify-center rounded-full border-4 border-black/70";
 const EMPTY_CELL_CLASS =
-  "border-zinc-200 bg-zinc-100 shadow-[inset_0_3px_8px_rgba(0,0,0,0.18),0_1px_1px_rgba(255,255,255,0.8)]";
-const CHECKER_CLASS =
-  "shadow-[inset_0_2px_4px_rgba(255,255,255,0.25),0_2px_5px_rgba(15,23,42,0.35)]";
+  "bg-gradient-to-b from-zinc-300 to-zinc-50 shadow-[inset_0_5px_8px_rgba(0,0,0,0.5),inset_0_-2px_3px_rgba(255,255,255,0.7)]";
+const RED_CHECKER_CLASS =
+  "bg-gradient-to-b from-red-600 to-red-500 shadow-[inset_0_5px_9px_rgba(0,0,0,0.4),inset_0_-2px_3px_rgba(255,255,255,0.2)]";
+const YELLOW_CHECKER_CLASS =
+  "bg-gradient-to-b from-yellow-400 to-yellow-300 shadow-[inset_0_5px_9px_rgba(0,0,0,0.3),inset_0_-2px_3px_rgba(255,255,255,0.3)]";
 
 export function GameBoard({
   game,
@@ -31,6 +34,7 @@ export function GameBoard({
   const winningCells =
     game.status.type === "won" ? game.status.winningCells : ([] as Position[]);
   const isDraw = game.status.type === "draw";
+  const lastMove = game.moveHistory[game.moveHistory.length - 1] ?? null;
 
   const tryDrop = (column: number) => {
     if (!disabled && legalMoves.includes(column)) {
@@ -85,6 +89,11 @@ export function GameBoard({
                 (position) => position.row === rowIndex && position.column === columnIndex
               );
               const winning = winningIndex >= 0;
+              const isLastMove =
+                !winning &&
+                lastMove !== null &&
+                lastMove.row === rowIndex &&
+                lastMove.column === columnIndex;
 
               return (
                 <span
@@ -97,11 +106,13 @@ export function GameBoard({
                   <span
                     className={`${CELL_BASE_CLASS} ${
                       cell === "red"
-                        ? `border-red-600 bg-red-500 ${CHECKER_CLASS}`
+                        ? RED_CHECKER_CLASS
                         : cell === "yellow"
-                          ? `border-yellow-300 bg-yellow-300 ${CHECKER_CLASS}`
+                          ? YELLOW_CHECKER_CLASS
                           : EMPTY_CELL_CLASS
-                    } ${winning ? "ring-2 ring-white motion-safe:animate-win-pop sm:ring-4" : ""}`}
+                    } ${winning ? "ring-4 ring-white motion-safe:animate-win-pop sm:ring-[6px]" : ""} ${
+                      isLastMove ? "motion-safe:animate-drop-pulse" : ""
+                    }`}
                     style={
                       winning ? { animationDelay: `${winningIndex * 110}ms` } : undefined
                     }
