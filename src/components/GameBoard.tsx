@@ -110,7 +110,7 @@ export function GameBoard({
                         : cell === "yellow"
                           ? YELLOW_CHECKER_CLASS
                           : EMPTY_CELL_CLASS
-                    } ${winning ? "ring-4 ring-white motion-safe:animate-win-pop sm:ring-[6px]" : ""} ${
+                    } ${winning ? "motion-safe:animate-win-pop" : ""} ${
                       isLastMove ? "motion-safe:animate-drop-pulse" : ""
                     }`}
                     style={
