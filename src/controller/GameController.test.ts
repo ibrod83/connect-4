@@ -47,7 +47,8 @@ async function flushAsyncAi(): Promise<void> {
 }
 
 describe("GameController", () => {
-  it("defaults AI difficulty to very hard", () => {
+  it("defaults to very hard AI starting first", () => {
+    expect(createDefaultSetup().startMode).toBe("yellow");
     expect(createDefaultSetup().players.yellow.aiLevel).toBe("very_hard");
   });
 

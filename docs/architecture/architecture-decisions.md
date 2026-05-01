@@ -37,6 +37,7 @@ This document is the short future-session reference for the main architectural d
 ## Starter Selection
 
 - Supported start modes are `red`, `yellow`, and `random`.
+- The default setup starts the AI first on `very_hard`.
 - Random starter resolution happens once in the logic/controller layer.
 - The UI displays the resolved starter but does not calculate it.
 - Dice behavior is intentionally out of scope.

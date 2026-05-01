@@ -14,7 +14,8 @@ export default defineConfig({
       manifest: {
         name: "Connect 4",
         short_name: "Connect 4",
-        description: "Connect 4 against AI opponents at four difficulty levels.",
+        description:
+          "Connect 4 against a solver-backed Very Hard AI that starts first and is virtually unbeatable.",
         categories: ["games"],
         theme_color: "#f8fafc",
         background_color: "#f8fafc",

@@ -6,10 +6,10 @@
     <meta name="theme-color" content="#f8fafc" />
     <meta name="google-site-verification" content="OWwNOEZWqmAglz5IrEs3RXp3Zaw37DyHwfJqmliL0qM" />
 
-    <title>Connect 4 — Free Online Game with AI Opponents</title>
+    <title>Connect 4 — Virtually Unbeatable AI Starts First</title>
     <meta
       name="description"
-      content="Play Connect 4 free online against four AI difficulty levels including a strong solver. English, Hebrew, and Thai. No signup, no ads."
+      content="Play Connect 4 free online against a solver-backed Very Hard AI. When the computer starts, it is virtually unbeatable."
     />
 
     <link rel="canonical" href="https://connect-4-two-tawny.vercel.app/" />
@@ -19,10 +19,10 @@
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Connect 4" />
-    <meta property="og:title" content="Connect 4 — Free Online Game with AI Opponents" />
+    <meta property="og:title" content="Connect 4 — Virtually Unbeatable AI Starts First" />
     <meta
       property="og:description"
-      content="Play Connect 4 free online against four AI difficulty levels."
+      content="Take on the solver-backed Very Hard AI with the computer starting first: a virtually unbeatable Connect 4 challenge."
     />
     <meta property="og:url" content="https://connect-4-two-tawny.vercel.app/" />
     <!-- TODO(seo): generate a 1200x600 (2:1) og-image.png and place it in public/. -->
@@ -31,14 +31,12 @@
     <meta property="og:image:height" content="600" />
     <meta property="og:image:alt" content="Connect 4 game board" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:locale:alternate" content="he_IL" />
-    <meta property="og:locale:alternate" content="th_TH" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Connect 4 — Free Online Game with AI Opponents" />
+    <meta name="twitter:title" content="Connect 4 — Virtually Unbeatable AI Starts First" />
     <meta
       name="twitter:description"
-      content="Play Connect 4 free online against four AI difficulty levels."
+      content="Take on the solver-backed Very Hard AI with the computer starting first: a virtually unbeatable Connect 4 challenge."
     />
     <meta name="twitter:image" content="https://connect-4-two-tawny.vercel.app/og-image.png" />
     <meta name="twitter:image:alt" content="Connect 4 game board" />
@@ -52,21 +50,21 @@
             "@id": "https://connect-4-two-tawny.vercel.app/#website",
             "url": "https://connect-4-two-tawny.vercel.app/",
             "name": "Connect 4",
-            "description": "Free online Connect 4 against AI opponents at four difficulty levels.",
-            "inLanguage": ["en", "he", "th"]
+            "description": "Free online Connect 4 focused on a virtually unbeatable AI challenge: on Very Hard, the solver-backed computer starts by default and is virtually unbeatable when it moves first.",
+            "inLanguage": "en"
           },
           {
             "@type": "VideoGame",
             "@id": "https://connect-4-two-tawny.vercel.app/#game",
             "name": "Connect 4",
             "url": "https://connect-4-two-tawny.vercel.app/",
-            "description": "Connect 4 (also known as Four in a Row) is a two-player connection strategy game. Drop discs into a vertical 7-by-6 grid and be the first to align four discs in a row, column, or diagonal.",
+            "description": "Connect 4 (also known as Four in a Row) is a two-player connection strategy game. Drop discs into a vertical 7-by-6 grid and be the first to align four discs in a row, column, or diagonal. The default challenge starts the solver-backed Very Hard computer first, making the AI virtually unbeatable when it moves first.",
             "applicationCategory": "GameApplication",
             "genre": "Strategy",
             "gamePlatform": "Web Browser",
             "playMode": ["SinglePlayer"],
             "operatingSystem": "Any",
-            "inLanguage": ["en", "he", "th"],
+            "inLanguage": "en",
             "offers": {
               "@type": "Offer",
               "price": "0",
@@ -99,7 +97,15 @@
                 "name": "What AI difficulty levels are available?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Four levels: Easy, Medium, Hard, and Very Hard. Easy through Hard use minimax with alpha-beta pruning. Very Hard uses a worker-backed WebAssembly solver with bitboards, a transposition table, and an opening book."
+                  "text": "Four levels are available: Easy, Medium, Hard, and Very Hard. Easy through Hard use minimax with alpha-beta pruning. Very Hard uses a worker-backed WebAssembly solver with bitboards, a transposition table, and an opening book."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can you beat the Very Hard AI?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "On Very Hard, the solver-backed computer starts by default and is virtually unbeatable when it moves first. Choose an easier level or start first yourself for a more forgiving game."
                 }
               }
             ]
@@ -130,9 +136,10 @@
         <p>
           Connect 4 is a two-player connection strategy game played on a vertical 7-by-6
           grid. Players take turns dropping discs into the columns; the first to align
-          four of their discs in a row, column, or diagonal wins. Challenge an AI
-          opponent at four difficulty levels. The app is free and is available in
-          English, Hebrew, and Thai.
+          four of their discs in a row, column, or diagonal wins. The default challenge
+          starts the solver-backed Very Hard computer first, making the AI virtually
+          unbeatable when it moves first. The app is free and runs in your browser with
+          no signup, ads, or download.
         </p>
       </div>
       <noscript>

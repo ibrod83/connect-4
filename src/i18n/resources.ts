@@ -19,7 +19,9 @@ export const resources = {
         yellowStarts: "Yellow",
         randomStarts: "Random",
         humanStarts: "Human",
-        aiStarts: "AI"
+        aiStarts: "AI",
+        veryHardAiStartsNote:
+          "On Very Hard, when the AI starts, it is virtually unbeatable."
       },
       difficulty: {
         easy: "Easy",
@@ -69,7 +71,9 @@ export const resources = {
         yellowStarts: "צהוב",
         randomStarts: "אקראי",
         humanStarts: "שחקן",
-        aiStarts: "מחשב"
+        aiStarts: "מחשב",
+        veryHardAiStartsNote:
+          "ברמה קשה מאוד, כשהמחשב מתחיל, הוא כמעט בלתי ניתן להבסה."
       },
       difficulty: {
         easy: "קל",
@@ -119,7 +123,9 @@ export const resources = {
         yellowStarts: "เหลือง",
         randomStarts: "สุ่ม",
         humanStarts: "ผู้เล่น",
-        aiStarts: "AI"
+        aiStarts: "AI",
+        veryHardAiStartsNote:
+          "ในระดับยากมาก เมื่อ AI เริ่มก่อน จะแทบเอาชนะไม่ได้"
       },
       difficulty: {
         easy: "ง่าย",

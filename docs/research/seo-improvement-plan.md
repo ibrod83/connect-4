@@ -53,7 +53,7 @@ The current `<h1>` + paragraph is ~70 words. AI-Overview citation correlates wit
 - **What is Connect 4** — origin (Milton Bradley, 1974), rule summary.
 - **How to play** — 4–6 sentences on the drop mechanic, victory conditions.
 - **Strategy basics** — center column control, double-threat traps, why the first player has a theoretical winning strategy.
-- **About this app** — AI levels, languages.
+- **About this app** — default AI-first Very Hard challenge, why the solver-backed computer is virtually unbeatable when it moves first, plus no-signup browser play.
 
 Aim for 300–500 words, sub-headed with `<h2>` for skim-readability. This is what Wave-1 crawlers and AI agents see.
 
@@ -74,11 +74,11 @@ Add alongside the existing graph:
 Google deprecated the HowTo SERP rich result in 2023 but still uses the schema for AI Overviews.
 
 ### FAQ expansion
-Current FAQ has 4 entries. Realistic additions:
+Current FAQ has 4 entries, including a beatability question for the Very Hard AI. Realistic additions:
 - "Who goes first in Connect 4?"
 - "Is Connect 4 always winnable?" (yes — first player wins with perfect play)
 - "Can I play Connect 4 on my phone?" (yes — installable PWA)
-- "What's the difference between the AI difficulty levels?"
+- "What's the difference between the AI difficulty levels?" (expand beyond the current short answer only if it stays honest)
 
 Keep it honest — don't pad with manufactured questions.
 
@@ -123,20 +123,26 @@ Chrome 2026 uses the manifest `screenshots` array for a richer install prompt:
 
 ---
 
-## P3 — Multilingual SEO
+## Future — Multilingual SEO (postponed)
 
-The app supports `en`/`he`/`th` via browser detection on a single URL. Consequence: Google will only index one language version, and `hreflang` is not applicable.
+Current MVP state: the app has one canonical SEO URL, with English static HTML and English metadata. The React UI still supports `en`/`he`/`th` through client-side browser detection and the language switcher, but those translations are a UX feature, not separate indexable language pages.
 
-**Option A — Stay single-URL (recommended for MVP).** Skip multilingual SEO entirely. Translations remain a UX feature for users who arrive in their detected language. Aligns with the "frontend-only MVP" framing in `AGENTS.md`.
+Keep the current single-URL SEO surface English-only:
 
-**Option B — Path-segment routing (`/en/`, `/he/`, `/th/`).** Real architectural change; would warrant its own plan and a discussion before starting:
+- No `hreflang` tags under the single-URL model.
+- No `og:locale:alternate` tags until localized URLs exist.
+- JSON-LD `inLanguage` should describe the canonical page as English.
+- Keep `public/sitemap.xml` to one canonical URL.
+
+Future localized SEO would require path-segment routing (`/en/`, `/he/`, `/th/`) or equivalent locale-specific URLs. Treat this as a separate project, not an MVP cleanup:
+
 - Modify the History-API routing in `App.tsx` to read language from the path.
 - Update `useDocumentLanguage` to follow the URL, not the browser.
 - Build-time per-locale `index.html` so each language has its own static intro and JSON-LD `inLanguage`.
 - One sitemap entry per language with `<xhtml:link rel="alternate" hreflang>` siblings.
 - `<link rel="alternate" hreflang>` tags in each rendered HTML.
 
-Worth doing only if Hebrew/Thai SEO is an explicit goal.
+Worth doing only if Hebrew/Thai search visibility becomes an explicit goal.
 
 ---
 
@@ -154,7 +160,7 @@ These don't touch the repo but matter for ranking:
 - [ ] [Rich Results Test](https://search.google.com/test/rich-results) — confirms `WebSite`, `VideoGame`, `FAQPage`, `HowTo` parse.
 - [ ] [Schema Markup Validator](https://validator.schema.org/) — broader schema check including non-Google AI search engines.
 - [ ] [PageSpeed Insights](https://pagespeed.web.dev) — all Core Web Vitals green on mobile and desktop.
-- [ ] Sitemap fetch in GSC reads **Success** with 1 URL discovered (or 3 if going multilingual).
+- [ ] Sitemap fetch in GSC reads **Success** with 1 URL discovered.
 - [ ] GSC URL Inspection — "View Crawled Page" → HTML tab contains the static `<h1>` + intro + JSON-LD; Screenshot tab shows the actual game UI (proves Wave-2 indexing worked).
 - [ ] Open `og-image.png` in [opengraph.xyz](https://www.opengraph.xyz/) — preview looks correct on Facebook/X/LinkedIn/Discord.
 

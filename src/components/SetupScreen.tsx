@@ -13,7 +13,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
   const { t } = useTranslation();
   const [humanColor, setHumanColor] = useState<PlayerId>("red");
   const [aiLevel, setAiLevel] = useState<AiLevel>("very_hard");
-  const [startMode, setStartMode] = useState<StartMode>("red");
+  const [startMode, setStartMode] = useState<StartMode>("yellow");
 
   const aiColor: PlayerId = humanColor === "red" ? "yellow" : "red";
 
@@ -123,6 +123,10 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
           </select>
         </label>
       </div>
+
+      <p className="mb-5 rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-900">
+        {t("setup.veryHardAiStartsNote")}
+      </p>
 
       <button
         className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-sm outline-none hover:bg-blue-800 focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"

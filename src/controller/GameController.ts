@@ -64,7 +64,7 @@ export type ControllerOptions = {
 
 export function createDefaultSetup(): GameSetup {
   return {
-    startMode: "red",
+    startMode: "yellow",
     players: {
       red: {
         id: "red",
