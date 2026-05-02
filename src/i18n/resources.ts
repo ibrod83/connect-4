@@ -31,6 +31,8 @@ export const resources = {
       },
       game: {
         board: "4 in a Row board",
+        boardInstructions:
+          "Use the column buttons or number keys 1 through {{columns}} to drop a piece.",
         turn: "{{player}}'s turn",
         yourTurn: "Your turn",
         aiThinking: "{{player}} is thinking",
@@ -41,6 +43,8 @@ export const resources = {
         restart: "Restart",
         newGame: "New game",
         column: "Column {{column}}",
+        columnFull: "Column {{column}} is full",
+        columnUnavailable: "Column {{column}} is unavailable",
         dropColumn: "Drop in column {{column}}",
         dropAnimation: "Drop animation"
       },
@@ -95,6 +99,8 @@ export const resources = {
       },
       game: {
         board: "לוח ארבע בשורה",
+        boardInstructions:
+          "השתמש בכפתורי העמודות או במקשי המספרים 1 עד {{columns}} כדי להניח דיסקית.",
         turn: "התור של {{player}}",
         yourTurn: "התור שלך",
         aiThinking: "{{player}} חושב",
@@ -105,6 +111,8 @@ export const resources = {
         restart: "התחל מחדש",
         newGame: "משחק חדש",
         column: "עמודה {{column}}",
+        columnFull: "עמודה {{column}} מלאה",
+        columnUnavailable: "עמודה {{column}} אינה זמינה",
         dropColumn: "הנח בעמודה {{column}}",
         dropAnimation: "אנימציית נפילה"
       },
@@ -159,6 +167,8 @@ export const resources = {
       },
       game: {
         board: "กระดานเรียงสี่",
+        boardInstructions:
+          "ใช้ปุ่มคอลัมน์หรือปุ่มตัวเลข 1 ถึง {{columns}} เพื่อหย่อนหมาก",
         turn: "ตาของ {{player}}",
         yourTurn: "ตาของคุณ",
         aiThinking: "{{player}} กำลังคิด",
@@ -169,6 +179,8 @@ export const resources = {
         restart: "เริ่มใหม่",
         newGame: "เกมใหม่",
         column: "คอลัมน์ {{column}}",
+        columnFull: "คอลัมน์ {{column}} เต็มแล้ว",
+        columnUnavailable: "คอลัมน์ {{column}} ไม่พร้อมใช้งาน",
         dropColumn: "หย่อนในคอลัมน์ {{column}}",
         dropAnimation: "แอนิเมชันการหย่อน"
       },

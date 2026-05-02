@@ -22,7 +22,7 @@ export function LanguageSwitcher() {
       <span className="sr-only">{t("language.label")}</span>
       <select
         aria-label={t("language.label")}
-        className="rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+        className="rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600"
         value={currentLanguage}
         onChange={(event) => void i18n.changeLanguage(event.target.value)}
       >

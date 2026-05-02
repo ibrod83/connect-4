@@ -57,7 +57,7 @@ describe("i18n and RTL behavior", () => {
     );
 
     expect(screen.getByTestId("game-board")).toHaveAttribute("dir", "ltr");
-    fireEvent.click(screen.getByTestId("cell-4-0"));
+    fireEvent.click(screen.getByTestId("column-button-0"));
 
     expect(onDrop).toHaveBeenCalledWith(0);
   });

@@ -20,6 +20,14 @@ describe("SetupScreen", () => {
         "On Very Hard, when the AI starts, it is virtually unbeatable."
       )
     ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Red" })).toHaveAttribute(
+      "aria-pressed",
+      "true"
+    );
+    expect(screen.getByRole("button", { name: "Yellow" })).toHaveAttribute(
+      "aria-pressed",
+      "false"
+    );
     expect(screen.getByRole("button", { name: "Start game" })).toBeInTheDocument();
   });
 });

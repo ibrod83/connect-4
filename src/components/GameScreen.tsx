@@ -50,6 +50,8 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
           </p>
           <h1
             key={statusText}
+            aria-atomic="true"
+            aria-live="polite"
             className="mt-1 text-2xl font-semibold text-zinc-950 motion-safe:animate-status-pop"
           >
             {statusText}
@@ -71,7 +73,7 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
 
         <div className="flex flex-col gap-2">
           <button
-            className="inline-flex items-center justify-center gap-2 rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 outline-none hover:bg-zinc-50 focus:ring-2 focus:ring-blue-100"
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 outline-none hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
             type="button"
             onClick={() => controller.restart()}
           >
@@ -79,7 +81,7 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
             {t("game.restart")}
           </button>
           <button
-            className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-700 px-4 py-2 text-sm font-semibold text-white outline-none hover:bg-blue-800 focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-700 px-4 py-2 text-sm font-semibold text-white outline-none hover:bg-blue-800 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
             type="button"
             onClick={() => controller.resetToSetup()}
           >
@@ -139,8 +141,8 @@ function PlayerBadge({
       }`}
     >
       <div
-        className={`mb-2 h-4 w-4 rounded-full ${
-          player === "red" ? "bg-red-500" : "bg-yellow-300"
+        className={`mb-2 h-4 w-4 rounded-full border ${
+          player === "red" ? "border-red-600 bg-red-500" : "border-zinc-700 bg-yellow-300"
         }`}
       />
       <p className="truncate text-sm font-semibold text-zinc-950">

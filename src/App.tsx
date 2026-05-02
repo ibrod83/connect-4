@@ -52,7 +52,10 @@ export default function App() {
       <div className="mx-auto mb-3 flex w-full max-w-6xl items-center justify-between gap-4 sm:mb-5">
       
         <div className="flex items-center gap-3">
-          <div className="grid size-10 grid-cols-2 gap-1 rounded-lg bg-blue-700 p-1">
+          <div
+            aria-hidden="true"
+            className="grid size-10 grid-cols-2 gap-1 rounded-lg bg-blue-700 p-1"
+          >
             <span className="rounded-full bg-red-500" />
             <span className="rounded-full bg-yellow-300" />
             <span className="rounded-full bg-yellow-300" />

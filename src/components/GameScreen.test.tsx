@@ -77,7 +77,10 @@ describe("GameScreen", () => {
     render(<GameScreen controller={controller} snapshot={playingSnapshot(false)} />);
 
     expect(screen.getByText("Started: You")).toBeInTheDocument();
-    expect(screen.getByText("Your turn")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Your turn" })).toHaveAttribute(
+      "aria-live",
+      "polite"
+    );
     expect(screen.getByText("Difficulty")).toBeInTheDocument();
     expect(screen.getByText("Medium")).toBeInTheDocument();
     expect(screen.getByText("You")).toBeInTheDocument();

@@ -80,7 +80,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
             icon={
               <span
                 aria-hidden="true"
-                className="size-4 rounded-full border border-yellow-400 bg-yellow-300"
+                className="size-4 rounded-full border border-zinc-700 bg-yellow-300"
               />
             }
             label={t("players.yellow")}
@@ -95,7 +95,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
             {t("setup.difficulty")}
           </span>
           <select
-            className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-950 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-950 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600"
             value={aiLevel}
             onChange={(event) => setAiLevel(event.target.value as AiLevel)}
           >
@@ -112,7 +112,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
             {t("setup.starter")}
           </span>
           <select
-            className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-950 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-950 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600"
             value={startMode}
             onChange={(event) => setStartMode(event.target.value as StartMode)}
           >
@@ -130,7 +130,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
       </p>
 
       <button
-        className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-sm outline-none hover:bg-blue-800 focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-sm outline-none hover:bg-blue-800 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
         type="submit"
       >
         <Play aria-hidden="true" className="size-4" />
@@ -160,7 +160,8 @@ type SegmentButtonProps = {
 function SegmentButton({ active, icon, label, onClick }: SegmentButtonProps) {
   return (
     <button
-      className={`flex items-center justify-center gap-2 rounded-md border px-4 py-3 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-100 ${
+      aria-pressed={active}
+      className={`flex items-center justify-center gap-2 rounded-md border px-4 py-3 text-sm font-semibold outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
         active
           ? "border-blue-700 bg-blue-50 text-blue-900"
           : "border-zinc-300 bg-white text-zinc-700 hover:bg-zinc-50"

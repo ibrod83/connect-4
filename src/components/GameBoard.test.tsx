@@ -8,7 +8,7 @@ describe("GameBoard", () => {
     vi.restoreAllMocks();
   });
 
-  it("drops a checker when any cell area in a column is clicked", () => {
+  it("drops a checker when a column button is clicked", () => {
     const onDrop = vi.fn();
 
     render(
@@ -20,7 +20,7 @@ describe("GameBoard", () => {
       />
     );
 
-    fireEvent.click(screen.getByTestId("cell-4-2"));
+    fireEvent.click(screen.getByRole("button", { name: "Drop in column 3" }));
 
     expect(onDrop).toHaveBeenCalledWith(2);
   });
@@ -37,7 +37,10 @@ describe("GameBoard", () => {
       />
     );
 
-    fireEvent.click(screen.getByTestId("cell-4-2"));
+    const columnButton = screen.getByRole("button", { name: "Column 3 is full" });
+
+    expect(columnButton).toBeDisabled();
+    fireEvent.click(columnButton);
 
     expect(onDrop).not.toHaveBeenCalled();
   });
@@ -69,7 +72,22 @@ describe("GameBoard", () => {
     expect(screen.getByTestId("board-grid").className).not.toContain("focus:ring");
   });
 
-  it("drops a checker when the board gap inside a column is clicked", () => {
+  it("describes the board controls to assistive technology", () => {
+    render(
+      <GameBoard
+        disabled={false}
+        game={createInitialGame("red")}
+        legalMoves={[0, 1, 2, 3, 4, 5, 6]}
+        onDrop={vi.fn()}
+      />
+    );
+
+    expect(screen.getByRole("group", { name: "4 in a Row board" })).toHaveAccessibleDescription(
+      "Use the column buttons or number keys 1 through 7 to drop a piece."
+    );
+  });
+
+  it("drops a checker when a number-key column shortcut is pressed", () => {
     const onDrop = vi.fn();
 
     render(
@@ -81,20 +99,9 @@ describe("GameBoard", () => {
       />
     );
 
-    const grid = screen.getByTestId("board-grid");
-    vi.spyOn(grid, "getBoundingClientRect").mockReturnValue({
-      bottom: 600,
-      height: 600,
-      left: 0,
-      right: 700,
-      top: 0,
-      width: 700,
-      x: 0,
-      y: 0,
-      toJSON: () => ({})
+    fireEvent.keyDown(screen.getByRole("group", { name: "4 in a Row board" }), {
+      key: "3"
     });
-
-    fireEvent.click(grid, { clientX: 250 });
 
     expect(onDrop).toHaveBeenCalledWith(2);
   });

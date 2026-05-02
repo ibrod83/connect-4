@@ -33,7 +33,7 @@ export function ShareButtons({ message, url, heading }: ShareButtonsProps) {
   };
 
   const buttonClass =
-    "inline-flex size-9 items-center justify-center rounded-md border border-zinc-300 bg-white text-zinc-700 outline-none hover:bg-zinc-50 focus:ring-2 focus:ring-blue-100";
+    "inline-flex size-9 items-center justify-center rounded-md border border-zinc-300 bg-white text-zinc-700 outline-none hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2";
 
   return (
     <div className="mt-3 border-t border-zinc-200 pt-3">
@@ -79,6 +79,9 @@ export function ShareButtons({ message, url, heading }: ShareButtonsProps) {
           )}
         </button>
       </div>
+      <span aria-atomic="true" aria-live="polite" className="sr-only" role="status">
+        {copied ? t("share.copied") : ""}
+      </span>
     </div>
   );
 }

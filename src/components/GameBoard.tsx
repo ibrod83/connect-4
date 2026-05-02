@@ -1,8 +1,8 @@
 import {
   type CSSProperties,
   type KeyboardEvent,
-  type MouseEvent,
   useEffect,
+  useId,
   useRef,
   useState
 } from "react";
@@ -47,6 +47,9 @@ export function GameBoard({
   onDrop
 }: GameBoardProps) {
   const { t } = useTranslation();
+  const componentId = useId();
+  const boardInstructionsId = `${componentId}-board-instructions`;
+  const dropAnimationLabelId = `${componentId}-drop-animation-label`;
   const [dropAnimationsEnabled, setDropAnimationsEnabled] = useState<boolean>(
     readDropAnimationsEnabled
   );
@@ -90,18 +93,6 @@ export function GameBoard({
     }
   };
 
-  const handleBoardClick = (event: MouseEvent<HTMLDivElement>) => {
-    const column = getColumnFromEvent(event, game.columns);
-
-    if (column !== null) {
-      tryDrop(column);
-    }
-  };
-
-  const handleBoardMouseDown = (event: MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
-
   const handleBoardKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const column = Number(event.key) - 1;
 
@@ -114,13 +105,13 @@ export function GameBoard({
   return (
     <div className="w-full" dir="ltr" data-testid="game-board">
       <div className="mb-2 flex items-center justify-end gap-2">
-        <span id="drop-animation-label" className="text-sm text-zinc-700">
+        <span id={dropAnimationLabelId} className="text-sm text-zinc-700">
           {t("game.dropAnimation")}
         </span>
         <button
           aria-checked={dropAnimationsEnabled}
-          aria-labelledby="drop-animation-label"
-          className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full outline-none transition-colors focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 ${
+          aria-labelledby={dropAnimationLabelId}
+          className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
             dropAnimationsEnabled ? "bg-blue-700" : "bg-zinc-300"
           }`}
           data-testid="drop-animation-toggle"
@@ -141,18 +132,16 @@ export function GameBoard({
           isDraw ? "motion-safe:animate-draw-shake" : ""
         }`}
       >
+        <p id={boardInstructionsId} className="sr-only">
+          {t("game.boardInstructions", { columns: String(game.columns) })}
+        </p>
         <div
-          aria-label={t("game.board")}
+          aria-hidden="true"
           className={`grid gap-1 rounded-md outline-none sm:gap-4 ${
             disabled ? "cursor-default" : "cursor-pointer"
           }`}
           data-testid="board-grid"
-          role="grid"
           style={{ gridTemplateColumns: `repeat(${game.columns}, minmax(0, 1fr))` }}
-          tabIndex={disabled ? -1 : 0}
-          onClick={handleBoardClick}
-          onKeyDown={handleBoardKeyDown}
-          onMouseDown={handleBoardMouseDown}
         >
           {game.board.flatMap((row, rowIndex) =>
             row.map((cell, columnIndex) => {
@@ -212,6 +201,39 @@ export function GameBoard({
             })
           )}
         </div>
+        <div
+          aria-describedby={boardInstructionsId}
+          aria-label={t("game.board")}
+          className="absolute inset-1.5 grid sm:inset-4"
+          role="group"
+          style={{ gridTemplateColumns: `repeat(${game.columns}, minmax(0, 1fr))` }}
+          onKeyDown={handleBoardKeyDown}
+        >
+          {Array.from({ length: game.columns }, (_, columnIndex) => {
+            const isLegalMove = legalMoves.includes(columnIndex);
+            const isColumnDisabled = disabled || !isLegalMove;
+            const ariaLabel = getColumnAriaLabel({
+              columnIndex,
+              disabled,
+              isLegalMove,
+              t
+            });
+
+            return (
+              <button
+                key={columnIndex}
+                aria-label={ariaLabel}
+                className={`rounded-md bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-700 ${
+                  isColumnDisabled ? "cursor-default" : "cursor-pointer"
+                }`}
+                data-testid={`column-button-${columnIndex}`}
+                disabled={isColumnDisabled}
+                type="button"
+                onClick={() => tryDrop(columnIndex)}
+              />
+            );
+          })}
+        </div>
         {showThinkingIndicator ? (
           <div
             aria-hidden="true"
@@ -228,25 +250,26 @@ export function GameBoard({
   );
 }
 
-function getColumnFromEvent(
-  event: MouseEvent<HTMLDivElement>,
-  columns: number
-): number | null {
-  const cell = (event.target as HTMLElement).closest<HTMLElement>("[data-column]");
-  const cellColumn = cell?.dataset.column;
+function getColumnAriaLabel({
+  columnIndex,
+  disabled,
+  isLegalMove,
+  t
+}: {
+  columnIndex: number;
+  disabled: boolean;
+  isLegalMove: boolean;
+  t: ReturnType<typeof useTranslation>["t"];
+}) {
+  const column = String(columnIndex + 1);
 
-  if (cellColumn !== undefined) {
-    return Number(cellColumn);
+  if (!isLegalMove) {
+    return t("game.columnFull", { column });
   }
 
-  const rect = event.currentTarget.getBoundingClientRect();
-
-  if (rect.width <= 0) {
-    return null;
+  if (disabled) {
+    return t("game.columnUnavailable", { column });
   }
 
-  const offset = event.clientX - rect.left;
-  const column = Math.floor((offset / rect.width) * columns);
-
-  return Math.min(columns - 1, Math.max(0, column));
+  return t("game.dropColumn", { column });
 }
