@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import App from "../App";
 import { GameBoard } from "../components/GameBoard";
 import { createInitialGame } from "../game-core";
@@ -25,7 +26,11 @@ describe("i18n and RTL behavior", () => {
   });
 
   it("changes visible labels without resetting the game", async () => {
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
 
     expect(
       screen.queryByRole("link", { name: "Accessibility statement" })
@@ -43,7 +48,7 @@ describe("i18n and RTL behavior", () => {
     expect(document.documentElement).toHaveAttribute("dir", "rtl");
     expect(screen.getByRole("link", { name: i18n.t("accessibility.statement") })).toHaveAttribute(
       "href",
-      "/accessibility/"
+      "/accessibility"
     );
     expect(screen.getByText(/התחיל: מחשב/)).toBeInTheDocument();
     expect(screen.queryByText(/Started: AI/)).not.toBeInTheDocument();

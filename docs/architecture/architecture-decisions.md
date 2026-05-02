@@ -77,10 +77,13 @@ This document is the short future-session reference for the main architectural d
 
 ## Routing
 
-- The app uses the History API directly rather than a router library, to keep runtime dependencies minimal.
-- Entering the playing phase pushes a history entry tagged `{ phase: "playing" }`.
-- A `popstate` listener calls `resetToSetup()` when the browser back button is pressed during a game, so back returns to the setup screen instead of leaving the app.
-- Leaving the playing phase via the "New game" button calls `history.back()` to keep browser history in sync; the popstate handler is a no-op when phase has already changed.
+- The app uses `react-router-dom` (`BrowserRouter`) with three paths: `/` for setup, `/play` for the game, and `/accessibility` for the Hebrew accessibility statement.
+- `App.tsx` is split into a top-level `<Routes>` shell and an inner `GameApp` component. The `/accessibility` route renders `AccessibilityPage` standalone (no game header, no language switcher); everything else renders `GameApp`.
+- Within `GameApp`, the controller's `phase` remains the source of truth for `/` vs `/play`; the URL is kept in sync as a side effect rather than driving rendering.
+- Entering the playing phase navigates to `/play` (push). Leaving the playing phase via the "New game" button navigates to `/` with `replace`, so the `/play` entry is dropped from history.
+- A location effect handles browser back/forward inside `GameApp`: when the URL is `/` but `phase` is still `playing`, it calls `resetToSetup()` (browser back during a game). When the URL is `/play` but `phase` is `setup`, it redirects to `/` with `replace` — this prevents the browser forward button from landing on the board after the user has gone back to setup.
+- Navigating between `/accessibility` and the game routes mounts/unmounts `GameApp`, which resets the controller. This matches the previous full-page-reload behavior of the static accessibility page.
+- `AccessibilityPage` overrides `<html lang>`/`<dir>` to Hebrew/RTL on mount regardless of the active UI language, since the accessibility statement is Hebrew-only.
 
 ## Network and Caching
 

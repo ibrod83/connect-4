@@ -1,13 +1,25 @@
 import { useEffect, useRef } from "react";
+import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { createGameController, type GameController } from "./controller/GameController";
 import { useGameController } from "./hooks/useGameController";
 import { useDocumentLanguage } from "./i18n";
+import { AccessibilityPage } from "./components/AccessibilityPage";
 import { GameScreen } from "./components/GameScreen";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
 import { SetupScreen } from "./components/SetupScreen";
 import { useTranslation } from "react-i18next";
 
 export default function App() {
+  return (
+    <Routes>
+      <Route path="/accessibility" element={<AccessibilityPage />} />
+      <Route path="/accessibility/" element={<AccessibilityPage />} />
+      <Route path="*" element={<GameApp />} />
+    </Routes>
+  );
+}
+
+function GameApp() {
   const { t, i18n } = useTranslation();
   const controllerRef = useRef<GameController | null>(null);
 
@@ -19,6 +31,8 @@ export default function App() {
   const controller = controllerRef.current;
   const snapshot = useGameController(controller);
   const prevPhaseRef = useRef(snapshot.phase);
+  const location = useLocation();
+  const navigate = useNavigate();
   const currentLanguage = i18n.resolvedLanguage ?? i18n.language;
   const showAccessibilityStatement = currentLanguage.startsWith("he");
 
@@ -31,28 +45,25 @@ export default function App() {
     prevPhaseRef.current = snapshot.phase;
 
     if (previous === "setup" && snapshot.phase === "playing") {
-      window.history.pushState({ phase: "playing" }, "");
+      navigate("/play");
     } else if (previous === "playing" && snapshot.phase === "setup") {
-      if (window.history.state?.phase === "playing") {
-        window.history.back();
-      }
+      navigate("/", { replace: true });
     }
-  }, [snapshot.phase]);
+  }, [snapshot.phase, navigate]);
 
   useEffect(() => {
-    const onPopState = () => {
-      if (controller.getSnapshot().phase === "playing") {
-        controller.resetToSetup();
-      }
-    };
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, [controller]);
+    const phase = controller.getSnapshot().phase;
+    if (location.pathname === "/" && phase === "playing") {
+      controller.resetToSetup();
+    } else if (location.pathname === "/play" && phase === "setup") {
+      navigate("/", { replace: true });
+    }
+  }, [location.pathname, controller, navigate]);
 
   return (
     <main className="min-h-screen bg-zinc-100 px-2 py-3 text-zinc-950 sm:px-6 sm:py-5 lg:px-8">
       <div className="mx-auto mb-3 flex w-full max-w-6xl items-center justify-between gap-4 sm:mb-5">
-      
+
         <div className="flex items-center gap-3">
           <div
             aria-hidden="true"
@@ -67,12 +78,12 @@ export default function App() {
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
           {showAccessibilityStatement ? (
-            <a
+            <Link
               className="text-sm font-semibold text-blue-700 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
-              href="/accessibility/"
+              to="/accessibility"
             >
               {t("accessibility.statement")}
-            </a>
+            </Link>
           ) : null}
           <LanguageSwitcher />
         </div>

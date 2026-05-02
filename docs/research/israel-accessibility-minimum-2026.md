@@ -75,9 +75,10 @@ Implemented:
 - Yellow setup and player markers now use a dark border so the marker boundary is visible on light cards.
 - Reduced-motion handling exists for checker drop animation, and the AI spinner uses Tailwind's `motion-reduce` handling.
 - Localized accessibility labels were added for English, Hebrew, and Thai.
-- A static Hebrew accessibility statement page exists at `/accessibility/`.
+- A Hebrew accessibility statement page exists at `/accessibility`, served as a React route via `react-router-dom` (component: `src/components/AccessibilityPage.tsx`). It overrides `<html lang>`/`<dir>` to Hebrew/RTL on mount regardless of the active UI language.
 - The accessibility statement link is shown in the app only when the selected UI language is Hebrew.
 - The accessibility page is listed in `sitemap.xml`.
+- Known SEO trade-off: because the page is now SPA-rendered, the initial HTML response at `/accessibility` is the English app shell rather than the Hebrew statement. JS-capable crawlers (e.g. Googlebot) will still see the Hebrew content after rendering, but non-JS crawlers and lightweight scrapers will not. If non-JS crawler visibility for this page becomes a goal, prerender `/accessibility` at build time or restore a static fallback under `public/accessibility/`.
 
 Still open:
 
