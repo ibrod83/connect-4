@@ -6,14 +6,6 @@ Tracks SEO work that has been planned but not yet done for the 4 in a Row site.
 
 ---
 
-## TODOs already marked in code
-
-These are explicit `TODO(seo):` markers a grep will surface:
-
-- **`public/og-image.png`** — 1200×600 (2:1 ratio per April 2026 spec). Without it, Facebook/X/LinkedIn shares render with no preview image. Referenced in `index.html` under `og:image` and `twitter:image`.
-
----
-
 ## P1 — High-impact, low-effort
 
 ### Custom domain
@@ -44,32 +36,6 @@ If it's loading eagerly, fix by moving the worker spawn behind the difficulty se
 ---
 
 ## P2 — Content depth
-
-### Expand the static intro in `index.html`
-The current `<h1>` + paragraph is ~70 words. AI-Overview citation correlates with content depth. Realistic expansion (still inside `#root`, replaced on hydrate):
-
-- **What is 4 in a Row** — origin (Milton Bradley, 1974), rule summary.
-- **How to play** — 4–6 sentences on the drop mechanic, victory conditions.
-- **Strategy basics** — center column control, double-threat traps, why the first player has a theoretical winning strategy.
-- **About this app** — default AI-first Very Hard challenge, why the solver-backed computer is virtually unbeatable when it moves first, plus no-signup browser play.
-
-Aim for 300–500 words, sub-headed with `<h2>` for skim-readability. This is what Wave-1 crawlers and AI agents see.
-
-### `HowTo` JSON-LD
-Add alongside the existing graph:
-```json
-{
-  "@type": "HowTo",
-  "name": "How to play 4 in a Row",
-  "step": [
-    { "@type": "HowToStep", "text": "Choose a color and decide who starts." },
-    { "@type": "HowToStep", "text": "Take turns dropping discs into one of seven columns." },
-    { "@type": "HowToStep", "text": "Discs fall to the lowest empty cell in the chosen column." },
-    { "@type": "HowToStep", "text": "Win by aligning four of your discs in a row, column, or diagonal." }
-  ]
-}
-```
-Google deprecated the HowTo SERP rich result in 2023 but still uses the schema for AI Overviews.
 
 ### FAQ expansion
 Current FAQ has 4 entries, including a beatability question for the Very Hard AI. Realistic additions:
