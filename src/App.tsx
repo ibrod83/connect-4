@@ -6,7 +6,7 @@ import { GameScreen } from "./components/GameScreen";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
 import { SetupScreen } from "./components/SetupScreen";
 import { useTranslation } from "react-i18next";
-//test
+
 export default function App() {
   const { t } = useTranslation();
   const controllerRef = useRef<GameController | null>(null);

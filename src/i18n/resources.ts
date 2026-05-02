@@ -51,6 +51,17 @@ export const resources = {
         player1: "Player 1",
         player2: "Player 2",
         ai: "AI"
+      },
+      share: {
+        title: "Share",
+        inviteHeading: "Invite a friend",
+        beatAi: "I beat the {{difficulty}} AI at 4 in a Row — can you?",
+        invite: "Come play 4 in a Row",
+        whatsapp: "Share on WhatsApp",
+        x: "Share on X",
+        telegram: "Share on Telegram",
+        copy: "Copy link",
+        copied: "Link copied"
       }
     }
   },
@@ -104,6 +115,17 @@ export const resources = {
         player1: "שחקן 1",
         player2: "שחקן 2",
         ai: "מחשב"
+      },
+      share: {
+        title: "שיתוף",
+        inviteHeading: "הזמינו חבר",
+        beatAi: "ניצחתי את המחשב ברמה {{difficulty}} בארבע בשורה — תצליחו גם?",
+        invite: "בואו לשחק ארבע בשורה",
+        whatsapp: "שתף בוואטסאפ",
+        x: "שתף ב-X",
+        telegram: "שתף בטלגרם",
+        copy: "העתק קישור",
+        copied: "הקישור הועתק"
       }
     }
   },
@@ -157,6 +179,17 @@ export const resources = {
         player1: "ผู้เล่น 1",
         player2: "ผู้เล่น 2",
         ai: "AI"
+      },
+      share: {
+        title: "แชร์",
+        inviteHeading: "ชวนเพื่อนมาเล่น",
+        beatAi: "ฉันเอาชนะ AI ระดับ{{difficulty}}ในเกมเรียงสี่ — คุณทำได้ไหม?",
+        invite: "มาเล่นเรียงสี่กัน",
+        whatsapp: "แชร์ผ่าน WhatsApp",
+        x: "แชร์บน X",
+        telegram: "แชร์บน Telegram",
+        copy: "คัดลอกลิงก์",
+        copied: "คัดลอกลิงก์แล้ว"
       }
     }
   }

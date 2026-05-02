@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { GameController, GameSnapshot } from "../controller/GameController";
 import type { AiLevel, PlayerId } from "../game-core";
 import { GameBoard } from "./GameBoard";
+import { ShareButtons } from "./ShareButtons";
 
 type Translator = (key: string, options?: Record<string, string>) => string;
 type PlayerIdentityKind = "you" | "ai" | "player1" | "player2";
@@ -21,6 +22,12 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
   const { game } = snapshot;
   const statusText = getStatusText(snapshot, t);
   const aiDifficulty = getAiDifficulty(snapshot);
+  const isGameOver = game.status.type === "won" || game.status.type === "draw";
+  const shareMessage = getShareMessage(snapshot, aiDifficulty, t);
+  const shareUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}${window.location.pathname}`
+      : "";
 
   return (
     <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
@@ -80,9 +87,29 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
             {t("game.newGame")}
           </button>
         </div>
+
+        {isGameOver ? <ShareButtons message={shareMessage} url={shareUrl} /> : null}
       </aside>
     </div>
   );
+}
+
+function getShareMessage(
+  snapshot: Extract<GameSnapshot, { phase: "playing" }>,
+  aiDifficulty: AiLevel | null,
+  t: Translator
+): string {
+  const { game } = snapshot;
+
+  if (game.status.type === "won") {
+    const winner = getPlayerIdentity(snapshot, game.status.winner, t);
+
+    if (winner.kind === "you" && aiDifficulty) {
+      return t("share.beatAi", { difficulty: t(`difficulty.${aiDifficulty}`) });
+    }
+  }
+
+  return t("share.invite");
 }
 
 function getAiDifficulty(snapshot: Extract<GameSnapshot, { phase: "playing" }>): AiLevel | null {

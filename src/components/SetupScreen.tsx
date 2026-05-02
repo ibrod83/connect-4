@@ -2,6 +2,7 @@ import { Play } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { AiLevel, GameSetup, PlayerId, StartMode } from "../game-core";
+import { ShareButtons } from "./ShareButtons";
 
 type SetupScreenProps = {
   onStart: (setup: GameSetup) => void;
@@ -135,6 +136,16 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
         <Play aria-hidden="true" className="size-4" />
         {t("setup.start")}
       </button>
+
+      <ShareButtons
+        heading={t("share.inviteHeading")}
+        message={t("share.invite")}
+        url={
+          typeof window !== "undefined"
+            ? `${window.location.origin}${window.location.pathname}`
+            : ""
+        }
+      />
     </form>
   );
 }
