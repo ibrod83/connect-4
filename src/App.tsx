@@ -45,20 +45,25 @@ function GameApp() {
     prevPhaseRef.current = snapshot.phase;
 
     if (previous === "setup" && snapshot.phase === "playing") {
-      navigate("/play");
+      navigate(".", { state: { phase: "playing" } });
     } else if (previous === "playing" && snapshot.phase === "setup") {
-      navigate("/", { replace: true });
+      const state = location.state as { phase?: string } | null;
+      if (state?.phase === "playing") {
+        navigate(-1);
+      }
     }
-  }, [snapshot.phase, navigate]);
+  }, [snapshot.phase, navigate, location.state]);
 
   useEffect(() => {
-    const phase = controller.getSnapshot().phase;
-    if (location.pathname === "/" && phase === "playing") {
-      controller.resetToSetup();
-    } else if (location.pathname === "/play" && phase === "setup") {
+    if (location.pathname === "/play") {
       navigate("/", { replace: true });
+      return;
     }
-  }, [location.pathname, controller, navigate]);
+    const state = location.state as { phase?: string } | null;
+    if (controller.getSnapshot().phase === "playing" && state?.phase !== "playing") {
+      controller.resetToSetup();
+    }
+  }, [location.pathname, location.state, controller, navigate]);
 
   return (
     <main className="min-h-screen bg-zinc-100 px-2 py-3 text-zinc-950 sm:px-6 sm:py-5 lg:px-8">

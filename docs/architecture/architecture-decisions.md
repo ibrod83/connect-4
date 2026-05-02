@@ -77,13 +77,14 @@ This document is the short future-session reference for the main architectural d
 
 ## Routing
 
-- The app uses `react-router-dom` (`BrowserRouter`) with three paths: `/` for setup, `/play` for the game, and `/accessibility` for the Hebrew accessibility statement.
+- The app uses `react-router-dom` (`BrowserRouter`) with two real paths: `/` for the game (setup or in-progress) and `/accessibility` for the Hebrew accessibility statement.
 - `App.tsx` is split into a top-level `<Routes>` shell and an inner `GameApp` component. The `/accessibility` route renders `AccessibilityPage` standalone (no game header, no language switcher); everything else renders `GameApp`.
-- Within `GameApp`, the controller's `phase` remains the source of truth for `/` vs `/play`; the URL is kept in sync as a side effect rather than driving rendering.
-- Entering the playing phase navigates to `/play` (push). Leaving the playing phase via the "New game" button navigates to `/` with `replace`, so the `/play` entry is dropped from history.
-- A location effect handles browser back/forward inside `GameApp`: when the URL is `/` but `phase` is still `playing`, it calls `resetToSetup()` (browser back during a game). When the URL is `/play` but `phase` is `setup`, it redirects to `/` with `replace` — this prevents the browser forward button from landing on the board after the user has gone back to setup.
+- Within `GameApp`, the controller's `phase` is the source of truth for which screen renders (`SetupScreen` vs `GameScreen`). The URL pathname does **not** change between setup and playing — the playing state is not separately addressable (there is no way to deep-link into a game), so making it a real route would invite confusing direct-URL hits and is not worth the host-fallback dependency it introduces.
+- To keep the browser back button useful during a game, entering the playing phase pushes a same-pathname history entry with `state: { phase: "playing" }`. Leaving the playing phase via the "New game" button calls `navigate(-1)` to pop that entry. A location effect detects browser back during a game (controller is `playing` but `location.state.phase` is no longer `"playing"`) and calls `resetToSetup()`.
+- A defensive redirect maps any cold hit on the legacy `/play` URL to `/` with `replace`. The path is no longer used internally.
 - Navigating between `/accessibility` and the game routes mounts/unmounts `GameApp`, which resets the controller. This matches the previous full-page-reload behavior of the static accessibility page.
 - `AccessibilityPage` overrides `<html lang>`/`<dir>` to Hebrew/RTL on mount regardless of the active UI language, since the accessibility statement is Hebrew-only.
+- `vercel.json` configures an SPA fallback rewrite so cold hits on `/accessibility` (and any other unknown path) serve `index.html` instead of 404ing on Vercel. Vite's dev server provides the equivalent fallback automatically in local development.
 
 ## Network and Caching
 
