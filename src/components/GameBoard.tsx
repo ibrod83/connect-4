@@ -137,13 +137,13 @@ export function GameBoard({
         </button>
       </div>
       <div
-        className={`relative rounded-lg bg-blue-700 p-2 shadow-sm sm:p-4 ${
+        className={`relative rounded-lg bg-blue-700 p-1.5 shadow-sm sm:p-4 ${
           isDraw ? "motion-safe:animate-draw-shake" : ""
         }`}
       >
         <div
           aria-label={t("game.board")}
-          className={`grid gap-1.5 rounded-md outline-none sm:gap-4 ${
+          className={`grid gap-1 rounded-md outline-none sm:gap-4 ${
             disabled ? "cursor-default" : "cursor-pointer"
           }`}
           data-testid="board-grid"

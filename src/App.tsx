@@ -48,7 +48,7 @@ export default function App() {
   }, [controller]);
 
   return (
-    <main className="min-h-screen bg-zinc-100 px-3 py-4 text-zinc-950 sm:px-6 sm:py-5 lg:px-8">
+    <main className="min-h-screen bg-zinc-100 px-2 py-3 text-zinc-950 sm:px-6 sm:py-5 lg:px-8">
       <div className="mx-auto mb-3 flex w-full max-w-6xl items-center justify-between gap-4 sm:mb-5">
       
         <div className="flex items-center gap-3">
