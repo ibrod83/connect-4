@@ -27,6 +27,9 @@ describe("i18n and RTL behavior", () => {
   it("changes visible labels without resetting the game", async () => {
     render(<App />);
 
+    expect(
+      screen.queryByRole("link", { name: "Accessibility statement" })
+    ).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Start game" }));
     expect(screen.getByTestId("game-board")).toBeInTheDocument();
     expect(screen.getByText(/Started: AI/)).toBeInTheDocument();
@@ -38,6 +41,10 @@ describe("i18n and RTL behavior", () => {
     });
     expect(screen.getByTestId("game-board")).toBeInTheDocument();
     expect(document.documentElement).toHaveAttribute("dir", "rtl");
+    expect(screen.getByRole("link", { name: i18n.t("accessibility.statement") })).toHaveAttribute(
+      "href",
+      "/accessibility/"
+    );
     expect(screen.getByText(/התחיל: מחשב/)).toBeInTheDocument();
     expect(screen.queryByText(/Started: AI/)).not.toBeInTheDocument();
   });

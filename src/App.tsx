@@ -8,7 +8,7 @@ import { SetupScreen } from "./components/SetupScreen";
 import { useTranslation } from "react-i18next";
 
 export default function App() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const controllerRef = useRef<GameController | null>(null);
 
   if (!controllerRef.current) {
@@ -19,6 +19,8 @@ export default function App() {
   const controller = controllerRef.current;
   const snapshot = useGameController(controller);
   const prevPhaseRef = useRef(snapshot.phase);
+  const currentLanguage = i18n.resolvedLanguage ?? i18n.language;
+  const showAccessibilityStatement = currentLanguage.startsWith("he");
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -63,7 +65,17 @@ export default function App() {
           </div>
           <p className="text-lg font-semibold text-zinc-950">{t("app.title")}</p>
         </div>
-        <LanguageSwitcher />
+        <div className="flex items-center gap-2 sm:gap-3">
+          {showAccessibilityStatement ? (
+            <a
+              className="text-sm font-semibold text-blue-700 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+              href="/accessibility/"
+            >
+              {t("accessibility.statement")}
+            </a>
+          ) : null}
+          <LanguageSwitcher />
+        </div>
       </div>
 
       {snapshot.phase === "setup" ? (

@@ -9,6 +9,9 @@ export const resources = {
       language: {
         label: "Language"
       },
+      accessibility: {
+        statement: "Accessibility statement"
+      },
       setup: {
         title: "New game",
         yourColor: "Your color",
@@ -77,6 +80,9 @@ export const resources = {
       language: {
         label: "שפה"
       },
+      accessibility: {
+        statement: "הצהרת נגישות"
+      },
       setup: {
         title: "משחק חדש",
         yourColor: "הצבע שלך",
@@ -144,6 +150,9 @@ export const resources = {
       },
       language: {
         label: "ภาษา"
+      },
+      accessibility: {
+        statement: "คำชี้แจงการเข้าถึง"
       },
       setup: {
         title: "เกมใหม่",

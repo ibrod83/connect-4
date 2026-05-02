@@ -75,10 +75,14 @@ Implemented:
 - Yellow setup and player markers now use a dark border so the marker boundary is visible on light cards.
 - Reduced-motion handling exists for checker drop animation, and the AI spinner uses Tailwind's `motion-reduce` handling.
 - Localized accessibility labels were added for English, Hebrew, and Thai.
+- A static Hebrew accessibility statement page exists at `/accessibility/`.
+- The accessibility statement link is shown in the app only when the selected UI language is Hebrew.
+- The accessibility page is listed in `sitemap.xml`.
 
 Still open:
 
-- Add a visible Accessibility page or link with a clear accessibility statement.
+- Add contact details to the accessibility statement. They are intentionally omitted for now.
+- Decide whether to add English and Thai accessibility statement versions later.
 - Manually test keyboard-only play in a real browser.
 - Manually test with at least one screen reader, such as NVDA on Windows or VoiceOver on macOS/iOS.
 - Run an automated audit with Lighthouse or axe, then manually review what the tool cannot judge.
@@ -125,10 +129,11 @@ Findings:
    - It would fail on `bg-blue-50` at about 4.44:1.
    - Current usage appears to be on white cards, so no immediate fix is required. Avoid moving these labels onto tinted backgrounds unless the text is darkened to `zinc-600` or `zinc-700`.
 
-4. Red pieces need visual QA against the blue board.
+4. Red pieces are visually acceptable in the reviewed render, but should still be checked at small sizes.
    - Red fill against `bg-blue-700` is only about 1.78:1 by color alone.
-   - The current checker rendering has a dark ring/shadow treatment, so the perceived piece boundary may be sufficient.
-   - Recommended verification: check the actual rendered board in a browser. If the red piece edge is not clearly visible, add an explicit dark outline to checkers.
+   - Screenshot review on 2026-05-02 showed the current checker rendering has a clearly visible dark rim/shadow, so the red pieces do not visually blend into the blue board.
+   - No checker styling change is recommended based on the reviewed render.
+   - Remaining verification: check the actual board at small mobile size and 200% zoom. If the red piece edge becomes unclear there, add an explicit dark outline to checkers.
 
 ## Practical Recommendation
 

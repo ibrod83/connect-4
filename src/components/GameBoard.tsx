@@ -164,7 +164,7 @@ export function GameBoard({
               if (winning) {
                 const winDelay = winningIndex * 110 + (shouldDrop ? dropDuration : 0);
                 animations.push(
-                  `win-pop 720ms cubic-bezier(0.34, 1.56, 0.64, 1) ${winDelay}ms both`
+                  `win-pop 720ms cubic-bezier(0.34, 1.56, 0.64, 1) ${winDelay}ms forwards`
                 );
               }
 
@@ -223,7 +223,7 @@ export function GameBoard({
               <button
                 key={columnIndex}
                 aria-label={ariaLabel}
-                className={`rounded-md bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-700 ${
+                className={`appearance-none rounded-md border-0 bg-transparent p-0 shadow-none outline-none disabled:bg-transparent disabled:opacity-100 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-700 ${
                   isColumnDisabled ? "cursor-default" : "cursor-pointer"
                 }`}
                 data-testid={`column-button-${columnIndex}`}
