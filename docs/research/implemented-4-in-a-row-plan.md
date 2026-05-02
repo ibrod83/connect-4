@@ -52,7 +52,7 @@ React connects to the non-React controller through a custom hook using `useSyncE
 7. Configured English and Hebrew i18n resources with fallback to English.
 8. Added document language/direction updates through `i18n.dir(language)`.
 9. Built setup UI for game mode, player names, AI difficulty, starter selection, and language selection.
-10. Built game UI with board, column controls, current status, resolved starter, winner/draw state, restart, and new game controls.
+10. Built game UI with board, column controls, current status, resolved starter, winner/draw state, restart, and back-to-setup controls.
 11. Styled the app with Tailwind for simple responsive LTR/RTL layouts.
 
 ## Test Coverage

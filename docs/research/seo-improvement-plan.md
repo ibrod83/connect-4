@@ -91,7 +91,7 @@ Keep the current single-URL SEO surface English-only:
 
 Future localized SEO would require path-segment routing (`/en/`, `/he/`, `/th/`) or equivalent locale-specific URLs. Treat this as a separate project, not an MVP cleanup:
 
-- Extend the `react-router-dom` setup in `App.tsx` (currently `/` and `/play`) to read language from a path prefix.
+- Extend the `react-router-dom` setup in `App.tsx` (currently `/` and `/accessibility`) to read language from a path prefix.
 - Update `useDocumentLanguage` to follow the URL, not the browser.
 - Build-time per-locale `index.html` so each language has its own static intro and JSON-LD `inLanguage`.
 - One sitemap entry per language with `<xhtml:link rel="alternate" hreflang>` siblings.

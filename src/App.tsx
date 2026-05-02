@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { createGameController, type GameController } from "./controller/GameController";
 import { useGameController } from "./hooks/useGameController";
 import { useDocumentLanguage } from "./i18n";
@@ -30,40 +30,12 @@ function GameApp() {
   useDocumentLanguage();
   const controller = controllerRef.current;
   const snapshot = useGameController(controller);
-  const prevPhaseRef = useRef(snapshot.phase);
-  const location = useLocation();
-  const navigate = useNavigate();
   const currentLanguage = i18n.resolvedLanguage ?? i18n.language;
   const showAccessibilityStatement = currentLanguage.startsWith("he");
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [snapshot.phase]);
-
-  useEffect(() => {
-    const previous = prevPhaseRef.current;
-    prevPhaseRef.current = snapshot.phase;
-
-    if (previous === "setup" && snapshot.phase === "playing") {
-      navigate(".", { state: { phase: "playing" } });
-    } else if (previous === "playing" && snapshot.phase === "setup") {
-      const state = location.state as { phase?: string } | null;
-      if (state?.phase === "playing") {
-        navigate(-1);
-      }
-    }
-  }, [snapshot.phase, navigate, location.state]);
-
-  useEffect(() => {
-    if (location.pathname === "/play") {
-      navigate("/", { replace: true });
-      return;
-    }
-    const state = location.state as { phase?: string } | null;
-    if (controller.getSnapshot().phase === "playing" && state?.phase !== "playing") {
-      controller.resetToSetup();
-    }
-  }, [location.pathname, location.state, controller, navigate]);
 
   return (
     <main className="min-h-screen bg-zinc-100 px-2 py-3 text-zinc-950 sm:px-6 sm:py-5 lg:px-8">

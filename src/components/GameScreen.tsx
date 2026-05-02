@@ -1,4 +1,4 @@
-import { Plus, RotateCcw } from "lucide-react";
+import { RotateCcw, Settings } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { GameController, GameSnapshot } from "../controller/GameController";
 import type { AiLevel, PlayerId } from "../game-core";
@@ -85,8 +85,8 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
             type="button"
             onClick={() => controller.resetToSetup()}
           >
-            <Plus aria-hidden="true" className="size-4" />
-            {t("game.newGame")}
+            <Settings aria-hidden="true" className="size-4" />
+            {t("game.backToSetup")}
           </button>
         </div>
 
