@@ -25,7 +25,7 @@ describe("GameBoard", () => {
     expect(onDrop).toHaveBeenCalledWith(2);
   });
 
-  it("shows a labeled back-to-setup button when a handler is provided", () => {
+  it("shows a labeled back-to-setup link when a handler is provided", () => {
     const onBackToSetup = vi.fn();
 
     render(
@@ -38,7 +38,11 @@ describe("GameBoard", () => {
       />
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Back to setup" }));
+    const backLink = screen.getByRole("link", { name: "Back to setup" });
+
+    expect(backLink).toHaveAttribute("href", "/");
+    expect(backLink).toHaveAttribute("title", "Back to setup");
+    fireEvent.click(backLink);
 
     expect(onBackToSetup).toHaveBeenCalledTimes(1);
   });

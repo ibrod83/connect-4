@@ -154,12 +154,12 @@ describe("GameScreen", () => {
     const { onBackToSetup } = renderGameScreen(playingSnapshot(false));
 
     fireEvent.click(
-      within(screen.getByTestId("game-board")).getByRole("button", {
+      within(screen.getByTestId("game-board")).getByRole("link", {
         name: "Back to setup"
       })
     );
     fireEvent.click(
-      screen.getAllByRole("button", {
+      screen.getAllByRole("link", {
         name: "Back to setup"
       })[1]
     );

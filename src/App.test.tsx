@@ -128,7 +128,7 @@ describe("App routing", () => {
       expect(screen.getByTestId("game-board")).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Back to setup" })[1]);
+    fireEvent.click(screen.getAllByRole("link", { name: "Back to setup" })[1]);
 
     await waitFor(() => {
       expect(router.getPath()).toBe("/");

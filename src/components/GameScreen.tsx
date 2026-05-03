@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import { RotateCcw, Settings } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { GameController, GameSnapshot } from "../controller/GameController";
@@ -29,6 +30,12 @@ export function GameScreen({ snapshot, controller, onBackToSetup }: GameScreenPr
     typeof window !== "undefined"
       ? `${window.location.origin}${window.location.pathname}`
       : "";
+  const backToSetupLabel = t("game.backToSetup");
+
+  const handleBackToSetupClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    onBackToSetup();
+  };
 
   return (
     <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
@@ -90,14 +97,14 @@ export function GameScreen({ snapshot, controller, onBackToSetup }: GameScreenPr
             <RotateCcw aria-hidden="true" className="size-4" />
             {t("game.restart")}
           </button>
-          <button
+          <a
             className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-700 px-4 py-2 text-sm font-semibold text-white outline-none hover:bg-blue-800 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-            type="button"
-            onClick={onBackToSetup}
+            href="/"
+            onClick={handleBackToSetupClick}
           >
             <Settings aria-hidden="true" className="size-4" />
-            {t("game.backToSetup")}
-          </button>
+            {backToSetupLabel}
+          </a>
         </div>
 
         {isGameOver ? <ShareButtons message={shareMessage} url={shareUrl} /> : null}

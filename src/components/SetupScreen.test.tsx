@@ -1,6 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import i18n from "../i18n/i18n";
 import { SetupScreen } from "./SetupScreen";
+
+const veryHardAiStartsNote =
+  "On Very Hard, when the AI starts, it is virtually unbeatable.";
 
 describe("SetupScreen", () => {
   beforeEach(async () => {
@@ -15,11 +18,7 @@ describe("SetupScreen", () => {
     expect(screen.getByText("Your color")).toBeInTheDocument();
     expect(screen.getByText("Difficulty")).toBeInTheDocument();
     expect(screen.getByLabelText("Starts")).toHaveValue("yellow");
-    expect(
-      screen.getByText(
-        "On Very Hard, when the AI starts, it is virtually unbeatable."
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(veryHardAiStartsNote)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Red" })).toHaveAttribute(
       "aria-pressed",
       "true"
@@ -29,5 +28,28 @@ describe("SetupScreen", () => {
       "false"
     );
     expect(screen.getByRole("button", { name: "Start game" })).toBeInTheDocument();
+  });
+
+  it("shows the very-hard warning only when the AI starts", () => {
+    render(<SetupScreen onStart={vi.fn()} />);
+
+    expect(screen.getByText(veryHardAiStartsNote)).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Starts"), { target: { value: "red" } });
+
+    expect(screen.queryByText(veryHardAiStartsNote)).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Starts"), { target: { value: "yellow" } });
+    fireEvent.change(screen.getByLabelText("Difficulty"), {
+      target: { value: "medium" }
+    });
+
+    expect(screen.queryByText(veryHardAiStartsNote)).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Difficulty"), {
+      target: { value: "very_hard" }
+    });
+
+    expect(screen.getByText(veryHardAiStartsNote)).toBeInTheDocument();
   });
 });

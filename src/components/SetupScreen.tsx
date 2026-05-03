@@ -17,6 +17,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
   const [startMode, setStartMode] = useState<StartMode>("yellow");
 
   const aiColor: PlayerId = humanColor === "red" ? "yellow" : "red";
+  const showVeryHardAiStartsNote = aiLevel === "very_hard" && startMode === aiColor;
 
   const changeHumanColor = (next: PlayerId) => {
     if (next === humanColor) return;
@@ -125,9 +126,11 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
         </label>
       </div>
 
-      <p className="mb-5 rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-900">
-        {t("setup.veryHardAiStartsNote")}
-      </p>
+      {showVeryHardAiStartsNote ? (
+        <p className="mb-5 rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-900">
+          {t("setup.veryHardAiStartsNote")}
+        </p>
+      ) : null}
 
       <button
         className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-sm outline-none hover:bg-blue-800 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"

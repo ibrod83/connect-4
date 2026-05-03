@@ -1,6 +1,7 @@
 import {
   type CSSProperties,
   type KeyboardEvent,
+  type MouseEvent,
   useEffect,
   useId,
   useRef,
@@ -52,6 +53,7 @@ export function GameBoard({
   const componentId = useId();
   const boardInstructionsId = `${componentId}-board-instructions`;
   const dropAnimationLabelId = `${componentId}-drop-animation-label`;
+  const backToSetupLabel = t("game.backToSetup");
   const [dropAnimationsEnabled, setDropAnimationsEnabled] = useState<boolean>(
     readDropAnimationsEnabled
   );
@@ -104,6 +106,11 @@ export function GameBoard({
     }
   };
 
+  const handleBackToSetupClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    onBackToSetup?.();
+  };
+
   return (
     <div className="w-full" dir="ltr" data-testid="game-board">
       <div
@@ -112,15 +119,15 @@ export function GameBoard({
         }`}
       >
         {onBackToSetup ? (
-          <button
-            aria-label={t("game.backToSetup")}
+          <a
             className="inline-flex size-9 items-center justify-center rounded-md border border-zinc-300 bg-white text-zinc-800 shadow-sm outline-none hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-            title={t("game.backToSetup")}
-            type="button"
-            onClick={onBackToSetup}
+            href="/"
+            title={backToSetupLabel}
+            onClick={handleBackToSetupClick}
           >
             <ArrowLeft aria-hidden="true" className="size-5" />
-          </button>
+            <span className="sr-only">{backToSetupLabel}</span>
+          </a>
         ) : null}
         <div className="flex items-center gap-2">
           <span id={dropAnimationLabelId} className="text-sm text-zinc-700">
