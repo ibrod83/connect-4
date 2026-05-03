@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { GameScreen } from "./GameScreen";
 import type { GameController, GameSnapshot } from "../controller/GameController";
-import { createInitialGame } from "../game-core";
+import { applyMove, createInitialGame } from "../game-core";
 import i18n from "../i18n/i18n";
 
 const controller = {
@@ -68,8 +68,23 @@ function localPlayingSnapshot(): Extract<GameSnapshot, { phase: "playing" }> {
   };
 }
 
+function wonSnapshot(): Extract<GameSnapshot, { phase: "playing" }> {
+  const game = [0, 1, 0, 1, 0, 1, 0].reduce(
+    (currentGame, column) => applyMove(currentGame, column),
+    createInitialGame("red")
+  );
+
+  return {
+    ...playingSnapshot(false),
+    game,
+    legalMoves: [],
+    aiThinking: false
+  };
+}
+
 describe("GameScreen", () => {
   beforeEach(async () => {
+    vi.clearAllMocks();
     await i18n.changeLanguage("en");
   });
 
@@ -77,7 +92,9 @@ describe("GameScreen", () => {
     render(<GameScreen controller={controller} snapshot={playingSnapshot(false)} />);
 
     expect(screen.getByText("Started: You")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Your turn" })).toHaveAttribute(
+    expect(screen.getByRole("heading", { name: "4 in a Row" })).toHaveClass("sr-only");
+    expect(screen.getByText("Your turn")).toHaveClass("sr-only");
+    expect(screen.getByText("Your turn")).toHaveAttribute(
       "aria-live",
       "polite"
     );
@@ -101,7 +118,7 @@ describe("GameScreen", () => {
     render(<GameScreen controller={controller} snapshot={localPlayingSnapshot()} />);
 
     expect(screen.getByText("Started: Player 1")).toBeInTheDocument();
-    expect(screen.getByText("Player 1's turn")).toBeInTheDocument();
+    expect(screen.getByText("Player 1's turn")).toHaveClass("sr-only");
     expect(screen.getByText("Player 1")).toBeInTheDocument();
     expect(screen.getByText("Player 2")).toBeInTheDocument();
     expect(screen.queryByText("Difficulty")).not.toBeInTheDocument();
@@ -112,12 +129,43 @@ describe("GameScreen", () => {
     render(<GameScreen controller={controller} snapshot={playingSnapshot(true)} />);
 
     expect(screen.getByTestId("ai-thinking-spinner")).toHaveClass("animate-spin");
-    expect(screen.getByText("AI is thinking")).toBeInTheDocument();
+    expect(screen.getByText("AI is thinking")).toHaveClass("sr-only");
   });
 
   it("hides the spinner outside AI thinking state", () => {
     render(<GameScreen controller={controller} snapshot={playingSnapshot(false)} />);
 
     expect(screen.queryByTestId("ai-thinking-spinner")).not.toBeInTheDocument();
+  });
+
+  it("wires the board back button to the setup reset command", () => {
+    render(<GameScreen controller={controller} snapshot={playingSnapshot(false)} />);
+
+    fireEvent.click(
+      within(screen.getByTestId("game-board")).getByRole("button", {
+        name: "Back to setup"
+      })
+    );
+
+    expect(controller.resetToSetup).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps player badges visually static during active turns", () => {
+    render(<GameScreen controller={controller} snapshot={playingSnapshot(false)} />);
+
+    expect(screen.getByText("You").closest("div")).toHaveClass(
+      "border-zinc-200",
+      "bg-zinc-50"
+    );
+    expect(screen.getByText("AI").closest("div")).toHaveClass(
+      "border-zinc-200",
+      "bg-zinc-50"
+    );
+  });
+
+  it("keeps game-over status visible", () => {
+    render(<GameScreen controller={controller} snapshot={wonSnapshot()} />);
+
+    expect(screen.getByRole("heading", { name: "You win" })).toBeInTheDocument();
   });
 });

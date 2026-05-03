@@ -25,6 +25,24 @@ describe("GameBoard", () => {
     expect(onDrop).toHaveBeenCalledWith(2);
   });
 
+  it("shows a labeled back-to-setup button when a handler is provided", () => {
+    const onBackToSetup = vi.fn();
+
+    render(
+      <GameBoard
+        disabled={false}
+        game={createInitialGame("red")}
+        legalMoves={[0, 1, 2, 3, 4, 5, 6]}
+        onBackToSetup={onBackToSetup}
+        onDrop={vi.fn()}
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Back to setup" }));
+
+    expect(onBackToSetup).toHaveBeenCalledTimes(1);
+  });
+
   it("does not drop when the clicked column is disabled", () => {
     const onDrop = vi.fn();
 

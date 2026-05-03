@@ -37,6 +37,7 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
           game={game}
           legalMoves={snapshot.legalMoves}
           showThinkingIndicator={snapshot.aiThinking}
+          onBackToSetup={() => controller.resetToSetup()}
           onDrop={(column) => controller.dropPiece(column)}
         />
       </section>
@@ -48,14 +49,22 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
               player: getPlayerIdentity(snapshot, snapshot.resolvedStarter, t).label
             })}
           </p>
-          <h1
-            key={statusText}
-            aria-atomic="true"
-            aria-live="polite"
-            className="mt-1 text-2xl font-semibold text-zinc-950 motion-safe:animate-status-pop"
-          >
-            {statusText}
-          </h1>
+          {isGameOver ? (
+            <h1
+              aria-atomic="true"
+              aria-live="polite"
+              className="mt-1 text-2xl font-semibold text-zinc-950"
+            >
+              {statusText}
+            </h1>
+          ) : (
+            <>
+              <h1 className="sr-only">{t("app.title")}</h1>
+              <p aria-atomic="true" aria-live="polite" className="sr-only">
+                {statusText}
+              </p>
+            </>
+          )}
           {aiDifficulty ? (
             <p className="mt-3 flex items-center gap-2 text-sm">
               <span className="font-semibold text-zinc-500">{t("setup.difficulty")}</span>
@@ -130,16 +139,9 @@ function PlayerBadge({
   snapshot: Extract<GameSnapshot, { phase: "playing" }>;
 }) {
   const { t } = useTranslation();
-  const isCurrent =
-    snapshot.game.status.type === "in_progress" &&
-    snapshot.game.status.currentPlayer === player;
 
   return (
-    <div
-      className={`rounded-md border p-3 ${
-        isCurrent ? "border-blue-700 bg-blue-50" : "border-zinc-200 bg-zinc-50"
-      }`}
-    >
+    <div className="rounded-md border border-zinc-200 bg-zinc-50 p-3">
       <div
         className={`mb-2 h-4 w-4 rounded-full border ${
           player === "red" ? "border-red-600 bg-red-500" : "border-zinc-700 bg-yellow-300"

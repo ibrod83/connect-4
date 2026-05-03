@@ -6,7 +6,7 @@ import {
   useRef,
   useState
 } from "react";
-import { LoaderCircle } from "lucide-react";
+import { ArrowLeft, LoaderCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { GameState, Position } from "../game-core";
 
@@ -25,6 +25,7 @@ type GameBoardProps = {
   legalMoves: number[];
   disabled: boolean;
   showThinkingIndicator?: boolean;
+  onBackToSetup?: () => void;
   onDrop: (column: number) => void;
 };
 
@@ -44,6 +45,7 @@ export function GameBoard({
   legalMoves,
   disabled,
   showThinkingIndicator = false,
+  onBackToSetup,
   onDrop
 }: GameBoardProps) {
   const { t } = useTranslation();
@@ -104,28 +106,45 @@ export function GameBoard({
 
   return (
     <div className="w-full" dir="ltr" data-testid="game-board">
-      <div className="mb-2 flex items-center justify-end gap-2">
-        <span id={dropAnimationLabelId} className="text-sm text-zinc-700">
-          {t("game.dropAnimation")}
-        </span>
-        <button
-          aria-checked={dropAnimationsEnabled}
-          aria-labelledby={dropAnimationLabelId}
-          className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
-            dropAnimationsEnabled ? "bg-blue-700" : "bg-zinc-300"
-          }`}
-          data-testid="drop-animation-toggle"
-          role="switch"
-          type="button"
-          onClick={() => setDropAnimationsEnabled((prev) => !prev)}
-        >
-          <span
-            aria-hidden="true"
-            className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${
-              dropAnimationsEnabled ? "translate-x-[18px]" : "translate-x-0.5"
+      <div
+        className={`mb-2 flex items-center gap-2 ${
+          onBackToSetup ? "justify-between" : "justify-end"
+        }`}
+      >
+        {onBackToSetup ? (
+          <button
+            aria-label={t("game.backToSetup")}
+            className="inline-flex size-9 items-center justify-center rounded-md border border-zinc-300 bg-white text-zinc-800 shadow-sm outline-none hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+            title={t("game.backToSetup")}
+            type="button"
+            onClick={onBackToSetup}
+          >
+            <ArrowLeft aria-hidden="true" className="size-5" />
+          </button>
+        ) : null}
+        <div className="flex items-center gap-2">
+          <span id={dropAnimationLabelId} className="text-sm text-zinc-700">
+            {t("game.dropAnimation")}
+          </span>
+          <button
+            aria-checked={dropAnimationsEnabled}
+            aria-labelledby={dropAnimationLabelId}
+            className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
+              dropAnimationsEnabled ? "bg-blue-700" : "bg-zinc-300"
             }`}
-          />
-        </button>
+            data-testid="drop-animation-toggle"
+            role="switch"
+            type="button"
+            onClick={() => setDropAnimationsEnabled((prev) => !prev)}
+          >
+            <span
+              aria-hidden="true"
+              className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${
+                dropAnimationsEnabled ? "translate-x-[18px]" : "translate-x-0.5"
+              }`}
+            />
+          </button>
+        </div>
       </div>
       <div
         className={`relative rounded-lg bg-blue-700 p-1.5 shadow-sm sm:p-4 ${
