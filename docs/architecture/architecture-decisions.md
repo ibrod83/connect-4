@@ -77,10 +77,11 @@ This document is the short future-session reference for the main architectural d
 
 ## Routing
 
-- The app uses `react-router-dom` (`BrowserRouter`) with two real paths: `/` for the game (setup or in-progress) and `/accessibility` for the Hebrew accessibility statement.
+- The app uses `react-router-dom` (`BrowserRouter`) with `/` for setup, `/play` for an active in-memory game, and `/accessibility` for the Hebrew accessibility statement.
 - `App.tsx` is split into a top-level `<Routes>` shell and an inner `GameApp` component. The `/accessibility` route renders `AccessibilityPage` standalone (no game header, no language switcher); everything else renders `GameApp`.
-- Within `GameApp`, the controller's `phase` is the source of truth for which screen renders (`SetupScreen` vs `GameScreen`). The URL pathname does **not** change between setup and playing — the playing state is not separately addressable (there is no way to deep-link into a game), so making it a real route would invite confusing direct-URL hits and is not worth the host-fallback dependency it introduces.
-- The setup ↔ playing transition does not push or pop history entries. Pressing the browser back button during a game exits the site rather than returning to setup; the only way back to the setup screen is the in-game "Back to setup" button, which calls `controller.resetToSetup()`. This was an intentional simplification — the prior history-push/pop scheme produced surprising back-button behavior across mobile gestures and the accessibility route, and the dedicated button is discoverable enough on its own.
+- Within `GameApp`, the controller's `phase` remains the source of truth. Starting a game calls `controller.startGame(setup)` and then navigates to `/play`; `GameScreen` renders only when the route is `/play` and the controller is already in `playing` phase.
+- `/play` is a browser-history affordance, not a restorable or shareable match URL. Direct `/play` visits and forward navigation after the game was reset are replaced back to `/`, so browser Forward does not revive a discarded game.
+- Pressing browser Back from `/play` returns to `/` and resets the controller to setup. The in-game "Back to setup" controls use the same route-back path, so they do not leave an extra duplicate setup entry in history.
 - Navigating between `/accessibility` and the game routes mounts/unmounts `GameApp`, which resets the controller. This matches the previous full-page-reload behavior of the static accessibility page.
 - `AccessibilityPage` overrides `<html lang>`/`<dir>` to Hebrew/RTL on mount regardless of the active UI language, since the accessibility statement is Hebrew-only.
 - `vercel.json` configures an SPA fallback rewrite so cold hits on `/accessibility` (and any other unknown path) serve `index.html` instead of 404ing on Vercel. Vite's dev server provides the equivalent fallback automatically in local development.

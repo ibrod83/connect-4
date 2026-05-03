@@ -15,9 +15,10 @@ type PlayerIdentity = {
 type GameScreenProps = {
   snapshot: Extract<GameSnapshot, { phase: "playing" }>;
   controller: GameController;
+  onBackToSetup: () => void;
 };
 
-export function GameScreen({ snapshot, controller }: GameScreenProps) {
+export function GameScreen({ snapshot, controller, onBackToSetup }: GameScreenProps) {
   const { t } = useTranslation();
   const { game } = snapshot;
   const statusText = getStatusText(snapshot, t);
@@ -37,7 +38,7 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
           game={game}
           legalMoves={snapshot.legalMoves}
           showThinkingIndicator={snapshot.aiThinking}
-          onBackToSetup={() => controller.resetToSetup()}
+          onBackToSetup={onBackToSetup}
           onDrop={(column) => controller.dropPiece(column)}
         />
       </section>
@@ -92,7 +93,7 @@ export function GameScreen({ snapshot, controller }: GameScreenProps) {
           <button
             className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-700 px-4 py-2 text-sm font-semibold text-white outline-none hover:bg-blue-800 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
             type="button"
-            onClick={() => controller.resetToSetup()}
+            onClick={onBackToSetup}
           >
             <Settings aria-hidden="true" className="size-4" />
             {t("game.backToSetup")}

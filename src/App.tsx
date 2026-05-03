@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { createGameController, type GameController } from "./controller/GameController";
+import type { GameSetup } from "./game-core";
 import { useGameController } from "./hooks/useGameController";
 import { useDocumentLanguage } from "./i18n";
 import { AccessibilityPage } from "./components/AccessibilityPage";
@@ -8,6 +9,9 @@ import { GameScreen } from "./components/GameScreen";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
 import { SetupScreen } from "./components/SetupScreen";
 import { useTranslation } from "react-i18next";
+
+const GAME_PATH = "/";
+const PLAY_PATH = "/play";
 
 export default function App() {
   return (
@@ -21,7 +25,10 @@ export default function App() {
 
 function GameApp() {
   const { t, i18n } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
   const controllerRef = useRef<GameController | null>(null);
+  const pendingPlayNavigationRef = useRef(false);
 
   if (!controllerRef.current) {
     controllerRef.current = createGameController();
@@ -32,10 +39,42 @@ function GameApp() {
   const snapshot = useGameController(controller);
   const currentLanguage = i18n.resolvedLanguage ?? i18n.language;
   const showAccessibilityStatement = currentLanguage.startsWith("he");
+  const isPlayPath = location.pathname === PLAY_PATH || location.pathname === `${PLAY_PATH}/`;
+  const shouldShowGame = snapshot.phase === "playing" && isPlayPath;
+
+  const startGame = (setup: GameSetup) => {
+    pendingPlayNavigationRef.current = true;
+    controller.startGame(setup);
+    void navigate(PLAY_PATH);
+  };
+
+  const backToSetup = () => {
+    void navigate(-1);
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [snapshot.phase]);
+
+  useEffect(() => {
+    if (snapshot.phase === "playing" && isPlayPath) {
+      pendingPlayNavigationRef.current = false;
+      return;
+    }
+
+    if (snapshot.phase === "playing" && !isPlayPath) {
+      if (pendingPlayNavigationRef.current) {
+        return;
+      }
+
+      controller.resetToSetup();
+      return;
+    }
+
+    if (snapshot.phase === "setup" && isPlayPath) {
+      void navigate(GAME_PATH, { replace: true });
+    }
+  }, [controller, isPlayPath, navigate, snapshot.phase]);
 
   return (
     <main className="min-h-screen bg-zinc-100 px-2 py-3 text-zinc-950 sm:px-6 sm:py-5 lg:px-8">
@@ -65,10 +104,10 @@ function GameApp() {
         </div>
       </div>
 
-      {snapshot.phase === "setup" ? (
-        <SetupScreen onStart={(setup) => controller.startGame(setup)} />
+      {shouldShowGame ? (
+        <GameScreen controller={controller} snapshot={snapshot} onBackToSetup={backToSetup} />
       ) : (
-        <GameScreen controller={controller} snapshot={snapshot} />
+        <SetupScreen onStart={startGame} />
       )}
     </main>
   );

@@ -13,6 +13,20 @@ const controller = {
   subscribe: vi.fn()
 } satisfies GameController;
 
+function renderGameScreen(snapshot: Extract<GameSnapshot, { phase: "playing" }>) {
+  const onBackToSetup = vi.fn();
+
+  render(
+    <GameScreen
+      controller={controller}
+      snapshot={snapshot}
+      onBackToSetup={onBackToSetup}
+    />
+  );
+
+  return { onBackToSetup };
+}
+
 function playingSnapshot(aiThinking: boolean): Extract<GameSnapshot, { phase: "playing" }> {
   const game = createInitialGame(aiThinking ? "yellow" : "red");
 
@@ -89,7 +103,7 @@ describe("GameScreen", () => {
   });
 
   it("shows nature-based identity in human versus AI games", () => {
-    render(<GameScreen controller={controller} snapshot={playingSnapshot(false)} />);
+    renderGameScreen(playingSnapshot(false));
 
     expect(screen.getByText("Started: You")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "4 in a Row" })).toHaveClass("sr-only");
@@ -106,16 +120,14 @@ describe("GameScreen", () => {
   });
 
   it("shows very hard as the default board difficulty when AI level is omitted", () => {
-    render(
-      <GameScreen controller={controller} snapshot={playingSnapshotWithoutExplicitAiLevel()} />
-    );
+    renderGameScreen(playingSnapshotWithoutExplicitAiLevel());
 
     expect(screen.getByText("Difficulty")).toBeInTheDocument();
     expect(screen.getByText("Very hard")).toBeInTheDocument();
   });
 
   it("shows numbered player identity in local human games", () => {
-    render(<GameScreen controller={controller} snapshot={localPlayingSnapshot()} />);
+    renderGameScreen(localPlayingSnapshot());
 
     expect(screen.getByText("Started: Player 1")).toBeInTheDocument();
     expect(screen.getByText("Player 1's turn")).toHaveClass("sr-only");
@@ -126,32 +138,38 @@ describe("GameScreen", () => {
   });
 
   it("shows a board spinner while AI is thinking", () => {
-    render(<GameScreen controller={controller} snapshot={playingSnapshot(true)} />);
+    renderGameScreen(playingSnapshot(true));
 
     expect(screen.getByTestId("ai-thinking-spinner")).toHaveClass("animate-spin");
     expect(screen.getByText("AI is thinking")).toHaveClass("sr-only");
   });
 
   it("hides the spinner outside AI thinking state", () => {
-    render(<GameScreen controller={controller} snapshot={playingSnapshot(false)} />);
+    renderGameScreen(playingSnapshot(false));
 
     expect(screen.queryByTestId("ai-thinking-spinner")).not.toBeInTheDocument();
   });
 
-  it("wires the board back button to the setup reset command", () => {
-    render(<GameScreen controller={controller} snapshot={playingSnapshot(false)} />);
+  it("wires the back controls to the setup navigation command", () => {
+    const { onBackToSetup } = renderGameScreen(playingSnapshot(false));
 
     fireEvent.click(
       within(screen.getByTestId("game-board")).getByRole("button", {
         name: "Back to setup"
       })
     );
+    fireEvent.click(
+      screen.getAllByRole("button", {
+        name: "Back to setup"
+      })[1]
+    );
 
-    expect(controller.resetToSetup).toHaveBeenCalledTimes(1);
+    expect(onBackToSetup).toHaveBeenCalledTimes(2);
+    expect(controller.resetToSetup).not.toHaveBeenCalled();
   });
 
   it("keeps player badges visually static during active turns", () => {
-    render(<GameScreen controller={controller} snapshot={playingSnapshot(false)} />);
+    renderGameScreen(playingSnapshot(false));
 
     expect(screen.getByText("You").closest("div")).toHaveClass(
       "border-zinc-200",
@@ -164,7 +182,7 @@ describe("GameScreen", () => {
   });
 
   it("keeps game-over status visible", () => {
-    render(<GameScreen controller={controller} snapshot={wonSnapshot()} />);
+    renderGameScreen(wonSnapshot());
 
     expect(screen.getByRole("heading", { name: "You win" })).toBeInTheDocument();
   });
