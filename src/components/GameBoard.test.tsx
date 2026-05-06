@@ -109,6 +109,74 @@ describe("GameBoard", () => {
     );
   });
 
+  it("marks only the latest dropped checker", () => {
+    const game = [0, 1].reduce(
+      (nextGame, column) => applyMove(nextGame, column),
+      createInitialGame("red")
+    );
+
+    render(
+      <GameBoard
+        disabled={false}
+        game={game}
+        legalMoves={[0, 1, 2, 3, 4, 5, 6]}
+        onDrop={vi.fn()}
+      />
+    );
+
+    const previousCheckerMarker = screen
+      .getByTestId("cell-5-0")
+      .querySelector("[data-last-checker-marker]");
+    const latestCheckerMarker = screen
+      .getByTestId("cell-5-1")
+      .querySelector("[data-last-checker-marker]");
+
+    expect(previousCheckerMarker).toBeNull();
+    expect(latestCheckerMarker).not.toBeNull();
+    expect(latestCheckerMarker).toHaveClass("rounded-full");
+    expect(latestCheckerMarker).toHaveClass("border-2");
+    expect(latestCheckerMarker).not.toHaveClass("bg-white");
+  });
+
+  it("keeps the previous marker visible while a fresh drop is falling", () => {
+    const firstMoveGame = applyMove(createInitialGame("red"), 0);
+    const secondMoveGame = applyMove(firstMoveGame, 1);
+    const { rerender } = render(
+      <GameBoard
+        disabled={false}
+        game={firstMoveGame}
+        legalMoves={[0, 1, 2, 3, 4, 5, 6]}
+        onDrop={vi.fn()}
+      />
+    );
+
+    rerender(
+      <GameBoard
+        disabled={false}
+        game={secondMoveGame}
+        legalMoves={[0, 1, 2, 3, 4, 5, 6]}
+        onDrop={vi.fn()}
+      />
+    );
+
+    const previousCheckerMarker = screen
+      .getByTestId("cell-5-0")
+      .querySelector('[data-last-checker-marker="outgoing"]');
+    const latestCheckerMarker = screen
+      .getByTestId("cell-5-1")
+      .querySelector('[data-last-checker-marker="incoming"]');
+
+    expect(previousCheckerMarker).not.toBeNull();
+    expect((previousCheckerMarker as HTMLElement).style.animation).toBe(
+      "last-checker-mark-release 120ms ease-out 500ms both"
+    );
+    expect(latestCheckerMarker).not.toBeNull();
+    expect(latestCheckerMarker).toHaveClass("opacity-0");
+    expect((latestCheckerMarker as HTMLElement).style.animation).toBe(
+      "last-checker-mark 120ms ease-out 500ms both"
+    );
+  });
+
   it("keeps winning checkers animated under the disabled control layer", () => {
     const game = [0, 0, 1, 1, 2, 2, 3].reduce(
       (nextGame, column) => applyMove(nextGame, column),

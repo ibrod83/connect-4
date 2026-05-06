@@ -40,6 +40,9 @@ const RED_CHECKER_CLASS =
   "bg-gradient-to-b from-red-600 to-red-500 shadow-[inset_0_5px_9px_rgba(0,0,0,0.4),inset_0_-2px_3px_rgba(255,255,255,0.2)]";
 const YELLOW_CHECKER_CLASS =
   "bg-gradient-to-b from-yellow-400 to-yellow-300 shadow-[inset_0_5px_9px_rgba(0,0,0,0.3),inset_0_-2px_3px_rgba(255,255,255,0.3)]";
+const LAST_CHECKER_MARK_CLASS =
+  "pointer-events-none absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white/95 shadow-[0_1px_2px_rgba(15,23,42,0.38)] sm:size-2.5";
+const LAST_CHECKER_MARK_DURATION_MS = 120;
 
 export function GameBoard({
   game,
@@ -78,14 +81,16 @@ export function GameBoard({
     game.status.type === "won" ? game.status.winningCells : ([] as Position[]);
   const isDraw = game.status.type === "draw";
   const lastMove = game.moveHistory.at(-1);
+  const previousMove = game.moveHistory.at(-2);
+  const lastMoveDropDuration = lastMove ? 200 + lastMove.row * 60 : 0;
 
   useEffect(() => {
     if (!isFreshMove || !dropAnimationsEnabled || !lastMove) {
       return;
     }
 
-    animationLockUntilRef.current = Date.now() + 200 + lastMove.row * 60;
-  }, [isFreshMove, dropAnimationsEnabled, lastMove]);
+    animationLockUntilRef.current = Date.now() + lastMoveDropDuration;
+  }, [isFreshMove, dropAnimationsEnabled, lastMove, lastMoveDropDuration]);
 
   const tryDrop = (column: number) => {
     if (Date.now() < animationLockUntilRef.current) {
@@ -177,8 +182,13 @@ export function GameBoard({
               const winning = winningIndex >= 0;
               const isLastMove =
                 lastMove?.row === rowIndex && lastMove?.column === columnIndex;
+              const isPreviousMove =
+                previousMove?.row === rowIndex && previousMove?.column === columnIndex;
+              const isFreshDrop = isFreshMove && dropAnimationsEnabled && Boolean(lastMove);
+              const showIncomingLastMoveMarker = isLastMove && !winning;
+              const showOutgoingLastMoveMarker = isFreshDrop && isPreviousMove && !winning;
               const dropDuration = 200 + rowIndex * 60;
-              const shouldDrop = isLastMove && dropAnimationsEnabled && isFreshMove;
+              const shouldDrop = isLastMove && isFreshDrop;
               const animations: string[] = [];
 
               if (shouldDrop) {
@@ -204,6 +214,19 @@ export function GameBoard({
                 checkerStyle.animation = animations.join(", ");
               }
 
+              const markerStyle: CSSProperties | undefined =
+                showIncomingLastMoveMarker && shouldDrop
+                  ? {
+                      animation: `last-checker-mark ${LAST_CHECKER_MARK_DURATION_MS}ms ease-out ${dropDuration}ms both`
+                    }
+                  : undefined;
+              const outgoingMarkerStyle: CSSProperties | undefined =
+                showOutgoingLastMoveMarker && shouldDrop === false
+                  ? {
+                      animation: `last-checker-mark-release ${LAST_CHECKER_MARK_DURATION_MS}ms ease-out ${lastMoveDropDuration}ms both`
+                    }
+                  : undefined;
+
               return (
                 <span
                   key={`${rowIndex}-${columnIndex}`}
@@ -220,7 +243,26 @@ export function GameBoard({
                       }`}
                       data-checker-anim={animations.length > 0 ? "" : undefined}
                       style={animations.length > 0 ? checkerStyle : undefined}
-                    />
+                    >
+                      {showOutgoingLastMoveMarker ? (
+                        <span
+                          aria-hidden="true"
+                          className={LAST_CHECKER_MARK_CLASS}
+                          data-last-checker-marker="outgoing"
+                          style={outgoingMarkerStyle}
+                        />
+                      ) : null}
+                      {showIncomingLastMoveMarker ? (
+                        <span
+                          aria-hidden="true"
+                          className={`${LAST_CHECKER_MARK_CLASS} ${
+                            shouldDrop ? "opacity-0 motion-reduce:opacity-100" : ""
+                          }`}
+                          data-last-checker-marker="incoming"
+                          style={markerStyle}
+                        />
+                      ) : null}
+                    </span>
                   ) : null}
                 </span>
               );
